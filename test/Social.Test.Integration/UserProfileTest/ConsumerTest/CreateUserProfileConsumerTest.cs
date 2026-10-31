@@ -1,5 +1,5 @@
 ﻿using AutoFixture;
-using Cypherly.Message.Contracts.Messages.Profile;
+using Cendrite.Message.Contracts.Messages.Profile;
 using Social.Infrastructure.Persistence.Context;
 using FakeItEasy;
 using FluentAssertions;

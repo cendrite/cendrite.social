@@ -11,9 +11,9 @@ public class PresentationTest
     {
         var result = Types.InAssembly(typeof(UserProfileController).Assembly)
             .That()
-            .ResideInNamespace("Cypherly.Authentication.Controllers")
+            .ResideInNamespace("Cendrite.Authentication.Controllers")
             .ShouldNot()
-            .HaveDependencyOn("Cypherly.Identity.Persistence")
+            .HaveDependencyOn("Cendrite.Identity.Persistence")
             .GetResult();
 
         result.ShouldBeSuccessful("API project should not reference Infrastructure project");
@@ -24,9 +24,9 @@ public class PresentationTest
     {
         var result = Types.InAssembly(typeof(UserProfileController).Assembly)
             .That()
-            .ResideInNamespace("Cypherly.ChatUser.API.ControllerTest")
+            .ResideInNamespace("Cendrite.ChatUser.API.ControllerTest")
             .ShouldNot()
-            .HaveDependencyOn("Cypherly.ChatUser.Domain")
+            .HaveDependencyOn("Cendrite.ChatUser.Domain")
             .GetResult();
 
         result.ShouldBeSuccessful("API project should not reference Domain project");
@@ -37,11 +37,11 @@ public class PresentationTest
     {
         var result = Types.InAssembly(typeof(UserProfileController).Assembly)
             .That()
-            .ResideInNamespace("Cypherly.ChatUser.API.ControllerTest")
+            .ResideInNamespace("Cendrite.ChatUser.API.ControllerTest")
             .And()
             .DoNotHaveName("BaseController")
             .Should()
-            .HaveDependencyOn("Cypherly.ChatUser.Application")
+            .HaveDependencyOn("Cendrite.ChatUser.Application")
             .GetResult();
 
         result.ShouldBeSuccessful("API project should reference Application project");

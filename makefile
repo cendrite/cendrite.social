@@ -1,4 +1,4 @@
-SLN := Cypherly.Social.sln
+SLN := Cendrite.Social.sln
 
 .PHONY: restore build test clean
 

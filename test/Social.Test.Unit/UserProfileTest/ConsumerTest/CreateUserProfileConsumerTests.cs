@@ -1,6 +1,6 @@
 using AutoFixture;
-using Cypherly.Message.Contracts.Messages.Profile;
-using Cypherly.Message.Contracts.Responses.Profile;
+using Cendrite.Message.Contracts.Messages.Profile;
+using Cendrite.Message.Contracts.Responses.Profile;
 using Social.Application.Contracts.Repositories;
 using Social.Application.Features.UserProfile.Consumers;
 using FakeItEasy;

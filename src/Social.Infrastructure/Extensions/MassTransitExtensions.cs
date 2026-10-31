@@ -1,8 +1,8 @@
 ﻿using System.Reflection;
-using Cypherly.Message.Contracts.Abstractions;
-using Cypherly.Message.Contracts.Messages.Common;
-using Cypherly.Message.Contracts.Messages.Friendship;
-using Cypherly.Message.Contracts.Messages.Profile;
+using Cendrite.Message.Contracts.Abstractions;
+using Cendrite.Message.Contracts.Messages.Common;
+using Cendrite.Message.Contracts.Messages.Friendship;
+using Cendrite.Message.Contracts.Messages.Profile;
 using Social.Application.Features.UserProfile.Consumers;
 using MassTransit;
 using Microsoft.Extensions.DependencyInjection;

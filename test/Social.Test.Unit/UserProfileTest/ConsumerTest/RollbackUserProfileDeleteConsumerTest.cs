@@ -1,6 +1,6 @@
 using AutoFixture;
-using Cypherly.Message.Contracts.Enums;
-using Cypherly.Message.Contracts.Messages.User;
+using Cendrite.Message.Contracts.Enums;
+using Cendrite.Message.Contracts.Messages.User;
 using Social.Application.Contracts.Repositories;
 using Social.Application.Features.UserProfile.Consumers;
 using Social.Application.Specifications.User;

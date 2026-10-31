@@ -44,7 +44,7 @@ public class ConnectionIdProxyConsumerTest : IntegrationTestBase
         fe!.AcceptFriendship();
         await Db.SaveChangesAsync();
 
-        var message = new Cypherly.Message.Contracts.Messages.Device.ConnectionIdsProxyMessage
+        var message = new Cendrite.Message.Contracts.Messages.Device.ConnectionIdsProxyMessage
         {
             TenantId = userProfile.Id,
             CorrelationId = Guid.NewGuid(),
@@ -59,7 +59,7 @@ public class ConnectionIdProxyConsumerTest : IntegrationTestBase
                 { friendProfile.Id, new List<Guid> { Guid.NewGuid(), Guid.NewGuid() } }
             }));
 
-        var context = A.Fake<ConsumeContext<Cypherly.Message.Contracts.Messages.Device.ConnectionIdsProxyMessage>>();
+        var context = A.Fake<ConsumeContext<Cendrite.Message.Contracts.Messages.Device.ConnectionIdsProxyMessage>>();
         A.CallTo(() => context.Message).Returns(message);
 
         // Act

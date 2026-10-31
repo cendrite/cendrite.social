@@ -1,0 +1,6 @@
+@Cendrite.Social.API_HostAddress = http://localhost:5028
+
+GET {{Cendrite.Social.API_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

@@ -1,5 +1,5 @@
-﻿using Cypherly.Message.Contracts.Abstractions;
-using Cypherly.Message.Contracts.Messages.Friendship;
+﻿using Cendrite.Message.Contracts.Abstractions;
+using Cendrite.Message.Contracts.Messages.Friendship;
 using Microsoft.Extensions.Logging;
 using Social.Application.Abstractions;
 using Social.Application.Contracts.Clients;

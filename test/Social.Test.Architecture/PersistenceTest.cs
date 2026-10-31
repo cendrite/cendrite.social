@@ -66,7 +66,7 @@ public class PersistenceTest
     }
 
     [Fact]
-    public void All_Contexts_Should_Inherit_From_CypherlyDbContext()
+    public void All_Contexts_Should_Inherit_From_CendriteDbContext()
     {
         var result = Types.InAssembly(typeof(SocialDbContext).Assembly)
             .That()
@@ -76,7 +76,7 @@ public class PersistenceTest
             .Inherit(typeof(DbContext))
             .GetResult();
 
-        result.ShouldBeSuccessful("All contexts should inherit from CypherlyDbContext");
+        result.ShouldBeSuccessful("All contexts should inherit from CendriteDbContext");
     }
 
     [Fact]
@@ -86,7 +86,7 @@ public class PersistenceTest
             .That()
             .AreClasses()
             .And()
-            .ResideInNamespace("Cypherly.Identity.Persistence.ModelConfiguration")
+            .ResideInNamespace("Cendrite.Identity.Persistence.ModelConfiguration")
             .Should()
             .ImplementInterface(typeof(IEntityTypeConfiguration<>))
             .GetResult();

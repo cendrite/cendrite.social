@@ -1,5 +1,5 @@
-﻿using Cypherly.Message.Contracts.Messages.Profile;
-using Cypherly.Message.Contracts.Responses.Profile;
+﻿using Cendrite.Message.Contracts.Messages.Profile;
+using Cendrite.Message.Contracts.Responses.Profile;
 using Social.Domain.Services;
 using MassTransit;
 using Microsoft.Extensions.Logging;
