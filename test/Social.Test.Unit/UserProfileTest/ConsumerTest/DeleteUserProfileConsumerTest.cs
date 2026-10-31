@@ -1,7 +1,7 @@
 using AutoFixture;
-using Cypherly.Message.Contracts.Abstractions;
-using Cypherly.Message.Contracts.Messages.Common;
-using Cypherly.Message.Contracts.Messages.User;
+using Cendrite.Message.Contracts.Abstractions;
+using Cendrite.Message.Contracts.Messages.Common;
+using Cendrite.Message.Contracts.Messages.User;
 using Social.Application.Contracts.Repositories;
 using Social.Application.Features.UserProfile.Consumers;
 using Social.Application.Specifications.User;

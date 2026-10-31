@@ -3,8 +3,8 @@ using Microsoft.Extensions.Logging;
 using Social.Application.Abstractions;
 using Social.Application.Contracts.Clients;
 using Social.Application.Contracts.Repositories;
-using Cypherly.Message.Contracts.Abstractions;
-using Cypherly.Message.Contracts.Messages.Profile;
+using Cendrite.Message.Contracts.Abstractions;
+using Cendrite.Message.Contracts.Messages.Profile;
 
 namespace Social.Application.Features.UserProfile.Events;
 

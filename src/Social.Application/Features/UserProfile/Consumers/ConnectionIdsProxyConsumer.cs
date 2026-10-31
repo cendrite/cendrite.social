@@ -1,5 +1,5 @@
-using Cypherly.Message.Contracts.Messages.Device;
-using Cypherly.Message.Contracts.Responses.Device;
+using Cendrite.Message.Contracts.Messages.Device;
+using Cendrite.Message.Contracts.Responses.Device;
 using MassTransit;
 using Microsoft.Extensions.Logging;
 using Social.Application.Contracts.Clients;
