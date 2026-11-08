@@ -2,6 +2,7 @@
 using Social.Domain.Aggregates;
 using Social.Domain.ValueObjects;
 using Xunit;
+using Social.Test.Unit.Setup.Helpers;
 
 namespace Social.Test.Unit.AggregateRootTest;
 
@@ -11,7 +12,7 @@ public class UserProfileTest
     public void SetDisplayName_ShouldSucceed_WhenValidDisplayName()
     {
         // Arrange
-        var userProfile = new UserProfile(Guid.NewGuid(), "TestUser", UserTag.Create("TestUser"));
+        var userProfile = new UserProfile(Guid.NewGuid(), "TestUser", UserTag.Create(UserTags.New()));
         var validDisplayName = "ValidName";
 
         // Act
@@ -27,7 +28,7 @@ public class UserProfileTest
     public void SetDisplayName_ShouldFail_WhenDisplayNameTooShort()
     {
         // Arrange
-        var userProfile = new UserProfile(Guid.NewGuid(), "TestUser", UserTag.Create("TestUser"));
+        var userProfile = new UserProfile(Guid.NewGuid(), "TestUser", UserTag.Create(UserTags.New()));
         var shortDisplayName = "ab"; // Less than 3 characters
 
         // Act
@@ -44,7 +45,7 @@ public class UserProfileTest
     public void SetDisplayName_ShouldFail_WhenDisplayNameTooLong()
     {
         // Arrange
-        var userProfile = new UserProfile(Guid.NewGuid(), "TestUser", UserTag.Create("TestUser"));
+        var userProfile = new UserProfile(Guid.NewGuid(), "TestUser", UserTag.Create(UserTags.New()));
         var longDisplayName = new string('a', 21); // More than 20 characters
 
         // Act
@@ -62,7 +63,7 @@ public class UserProfileTest
     public void SetDisplayName_ShouldFail_WhenDisplayNameHasInvalidCharacters()
     {
         // Arrange
-        var userProfile = new UserProfile(Guid.NewGuid(), "TestUser", UserTag.Create("TestUser"));
+        var userProfile = new UserProfile(Guid.NewGuid(), "TestUser", UserTag.Create(UserTags.New()));
         var invalidDisplayName = "Invalid@Name"; // Contains invalid characters
 
         // Act
@@ -80,7 +81,7 @@ public class UserProfileTest
     public void AddFriendship_ShouldFail_WhenAddingSelfAsFriend()
     {
         // Arrange
-        var userProfile = new UserProfile(Guid.NewGuid(), "TestUser", UserTag.Create("TestUser"));
+        var userProfile = new UserProfile(Guid.NewGuid(), "TestUser", UserTag.Create(UserTags.New()));
 
         // Act
         var result = userProfile.AddFriendship(userProfile);
@@ -94,8 +95,8 @@ public class UserProfileTest
     public void AddFriendship_ShouldSucceed_WhenAddingValidFriend()
     {
         // Arrange
-        var userProfile = new UserProfile(Guid.NewGuid(), "TestUser", UserTag.Create("TestUser"));
-        var friendProfile = new UserProfile(Guid.NewGuid(), "FriendUser", UserTag.Create("FriendUser"));
+        var userProfile = new UserProfile(Guid.NewGuid(), "TestUser", UserTag.Create(UserTags.New()));
+        var friendProfile = new UserProfile(Guid.NewGuid(), "FriendUser", UserTag.Create(UserTags.New()));
 
         // Act
         var result = userProfile.AddFriendship(friendProfile);
@@ -109,8 +110,8 @@ public class UserProfileTest
     public void AddFriendship_ShouldFail_WhenFriendshipAlreadyExists()
     {
         // Arrange
-        var userProfile = new UserProfile(Guid.NewGuid(), "TestUser", UserTag.Create("TestUser"));
-        var friendProfile = new UserProfile(Guid.NewGuid(), "FriendUser", UserTag.Create("FriendUser"));
+        var userProfile = new UserProfile(Guid.NewGuid(), "TestUser", UserTag.Create(UserTags.New()));
+        var friendProfile = new UserProfile(Guid.NewGuid(), "FriendUser", UserTag.Create(UserTags.New()));
 
         // Act
         userProfile.AddFriendship(friendProfile); // First time, should succeed
@@ -125,8 +126,8 @@ public class UserProfileTest
     public void AddFriendship_ShouldFail_WhenFriendshipExistsInReceivedList()
     {
         // Arrange
-        var userProfile = new UserProfile(Guid.NewGuid(), "TestUser", UserTag.Create("TestUser"));
-        var friendProfile = new UserProfile(Guid.NewGuid(), "FriendUser", UserTag.Create("FriendUser"));
+        var userProfile = new UserProfile(Guid.NewGuid(), "TestUser", UserTag.Create(UserTags.New()));
+        var friendProfile = new UserProfile(Guid.NewGuid(), "FriendUser", UserTag.Create(UserTags.New()));
 
         // Simulate that friend has already initiated a friendship with userProfile
         friendProfile.AddFriendship(userProfile);

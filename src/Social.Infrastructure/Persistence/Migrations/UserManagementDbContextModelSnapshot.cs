@@ -211,8 +211,8 @@ namespace Social.Infrastructure.Persistence.Migrations
 
                             b1.Property<string>("Tag")
                                 .IsRequired()
-                                .HasMaxLength(58)
-                                .HasColumnType("character varying(58)")
+                                .HasMaxLength(12)
+                                .HasColumnType("character varying(12)")
                                 .HasColumnName("tag");
 
                             b1.HasKey("UserProfileId");

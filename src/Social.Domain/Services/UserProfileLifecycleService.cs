@@ -5,16 +5,15 @@ namespace Social.Domain.Services;
 
 public interface IUserProfileLifecycleService
 {
-    UserProfile CreateUserProfile(Guid userId, string username);
+    UserProfile CreateUserProfile(Guid userId, string username, string userTag);
     void SoftDelete(UserProfile userProfile);
     void RevertSoftDelete(UserProfile userProfile);
 }
 public class UserProfileLifecycleLifecycleService : IUserProfileLifecycleService
 {
-    public UserProfile CreateUserProfile(Guid userId, string username)
+    public UserProfile CreateUserProfile(Guid userId, string username, string userTag)
     {
-        var tag = UserTag.Create(username);
-        return new(userId, username, tag);
+        return new(userId, username, UserTag.Create(userTag));
     }
 
     public void SoftDelete(UserProfile userProfile)

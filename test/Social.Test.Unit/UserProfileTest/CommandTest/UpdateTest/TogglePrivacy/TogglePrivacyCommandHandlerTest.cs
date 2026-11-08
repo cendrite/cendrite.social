@@ -7,6 +7,7 @@ using Microsoft.Extensions.Logging;
 using Social.Domain.Aggregates;
 using Social.Domain.ValueObjects;
 using Xunit;
+using Social.Test.Unit.Setup.Helpers;
 
 namespace Social.Test.Unit.UserProfileTest.CommandTest.UpdateTest.TogglePrivacy;
 
@@ -28,7 +29,7 @@ public class TogglePrivacyCommandHandlerTest
     public async Task TogglePrivacy_Command_Should_Update_Privacy()
     {
         // Arrange
-        var profile = new UserProfile(Guid.NewGuid(), "ValidUsername", UserTag.Create("ValidUsername"));
+        var profile = new UserProfile(Guid.NewGuid(), "ValidUsername", UserTag.Create(UserTags.New()));
         var command = new TogglePrivacyCommand
         {
             TenantId = profile.Id,

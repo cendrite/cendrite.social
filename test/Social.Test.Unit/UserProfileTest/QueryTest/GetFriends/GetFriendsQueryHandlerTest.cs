@@ -7,6 +7,7 @@ using Social.Application.Features.Friendships.Queries.GetFriends;
 using Social.Domain.Aggregates;
 using Social.Domain.ValueObjects;
 using Xunit;
+using Social.Test.Unit.Setup.Helpers;
 
 namespace Social.Test.Unit.UserProfileTest.QueryTest.GetFriends;
 
@@ -42,7 +43,7 @@ public class GetFriendsQueryHandlerTest
     {
         // Arrange
         var query = new GetFriendsQuery { TenantId = Guid.NewGuid() };
-        var userProfile = new UserProfile(Guid.NewGuid(), "Eric", UserTag.Create("Eric"));
+        var userProfile = new UserProfile(Guid.NewGuid(), "Eric", UserTag.Create(UserTags.New()));
         A.CallTo(() => _fakeRepo.GetSingleAsync(A<ISpecification<UserProfile>>._, A<CancellationToken>._)).Returns(userProfile);
 
         // Act

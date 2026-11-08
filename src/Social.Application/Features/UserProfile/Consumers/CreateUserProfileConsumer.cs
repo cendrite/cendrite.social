@@ -19,7 +19,7 @@ public class CreateUserProfileConsumer(
         var message = context.Message;
         try
         {
-            var profile = userProfileLifecycleService.CreateUserProfile(message.UserId, message.Username);
+            var profile = userProfileLifecycleService.CreateUserProfile(message.UserId, message.Username, message.UserTag);
 
             await userProfileRepository.CreateAsync(profile, context.CancellationToken);
 

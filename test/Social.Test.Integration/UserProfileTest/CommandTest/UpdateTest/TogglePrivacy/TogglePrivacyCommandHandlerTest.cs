@@ -8,6 +8,7 @@ using Social.Application.Features.UserProfile.Commands.Update.TogglePrivacy;
 using Social.Domain.Aggregates;
 using Social.Domain.ValueObjects;
 using Social.Test.Integration.Setup;
+using Social.Test.Integration.Setup.Helpers;
 
 namespace Social.Test.Integration.UserProfileTest.CommandTest.UpdateTest.TogglePrivacy;
 
@@ -45,7 +46,7 @@ public class TogglePrivacyCommandHandlerTest : IntegrationTestBase
     public async Task Handle_ValidCommand_ShouldReturnResultOk()
     {
         // Arrange
-        var profile = new UserProfile(Guid.NewGuid(), "ValidUsername", UserTag.Create("ValidUsername"));
+        var profile = new UserProfile(Guid.NewGuid(), "ValidUsername", UserTag.Create(UserTags.New()));
         Db.UserProfile.Add(profile);
         await Db.SaveChangesAsync();
 

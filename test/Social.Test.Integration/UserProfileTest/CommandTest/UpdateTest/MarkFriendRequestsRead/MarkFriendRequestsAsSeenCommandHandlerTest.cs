@@ -9,6 +9,7 @@ using Social.Domain.Aggregates;
 using Social.Domain.Interfaces;
 using Social.Domain.ValueObjects;
 using Social.Test.Integration.Setup;
+using Social.Test.Integration.Setup.Helpers;
 
 namespace Social.Test.Integration.UserProfileTest.CommandTest.UpdateTest.MarkFriendRequestsRead;
 
@@ -52,8 +53,8 @@ public class MarkFriendRequestsAsSeenCommandHandlerTest : IntegrationTestBase
     public async Task Handle_When_UserFound_And_PendingFriends_Should_MarkRead()
     {
         // Arrange
-        var userprofile = new UserProfile(Guid.NewGuid(), "James", UserTag.Create("James"));
-        var friendProfile = new UserProfile(Guid.NewGuid(), "John", UserTag.Create("John"));
+        var userprofile = new UserProfile(Guid.NewGuid(), "James", UserTag.Create(UserTags.New()));
+        var friendProfile = new UserProfile(Guid.NewGuid(), "John", UserTag.Create(UserTags.New()));
         friendProfile.AddFriendship(userprofile);
 
         Db.UserProfile.Add(friendProfile);

@@ -14,6 +14,7 @@ using Social.Domain.Aggregates;
 using Social.Domain.Services;
 using Social.Domain.ValueObjects;
 using Social.Test.Integration.Setup;
+using Social.Test.Integration.Setup.Helpers;
 
 namespace Social.Test.Integration.UserProfileTest.ConsumerTest;
 
@@ -35,7 +36,7 @@ public class RollbackUserProfileDeleteConsumerTest : IntegrationTestBase
     public async Task Consume_Valid_Message_Should_RevertSoftDelete_UserProfile()
     {
         // Arrange
-        var userProfile = new UserProfile(Guid.NewGuid(), "James", UserTag.Create("james"));
+        var userProfile = new UserProfile(Guid.NewGuid(), "James", UserTag.Create(UserTags.New()));
         userProfile.SetDelete();
         await Db.UserProfile.AddAsync(userProfile);
         await Db.SaveChangesAsync();
@@ -59,7 +60,7 @@ public class RollbackUserProfileDeleteConsumerTest : IntegrationTestBase
     public async Task Consume_Invalid_Message_Should_Not_RevertSoftDelete_UserProfile()
     {
         // Arrange
-        var userProfile = new UserProfile(Guid.NewGuid(), "James", UserTag.Create("james"));
+        var userProfile = new UserProfile(Guid.NewGuid(), "James", UserTag.Create(UserTags.New()));
         userProfile.SetDelete();
         await Db.UserProfile.AddAsync(userProfile);
         await Db.SaveChangesAsync();

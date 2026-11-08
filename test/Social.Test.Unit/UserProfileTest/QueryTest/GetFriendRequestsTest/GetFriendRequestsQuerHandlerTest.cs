@@ -7,6 +7,7 @@ using Social.Application.Features.Friendships.Queries.GetFriendRequests;
 using Social.Domain.Aggregates;
 using Social.Domain.ValueObjects;
 using Xunit;
+using Social.Test.Unit.Setup.Helpers;
 
 namespace Social.Test.Unit.UserProfileTest.QueryTest.GetFriendRequestsTest;
 
@@ -26,7 +27,7 @@ public class GetFriendRequestsQuerHandlerTest
     public async Task Handle_Given_Valid_Query_Should_Return_Result_Ok()
     {
         // Arrange
-        var user = new UserProfile(Guid.NewGuid(), "Kristian", UserTag.Create("Kristian"));
+        var user = new UserProfile(Guid.NewGuid(), "Kristian", UserTag.Create(UserTags.New()));
 
         var query = new GetFriendRequestsQuery()
         {

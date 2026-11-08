@@ -8,6 +8,7 @@ using Social.Domain.Aggregates;
 using Social.Domain.Common;
 using Social.Domain.ValueObjects;
 using Social.Test.Integration.Setup;
+using Social.Test.Integration.Setup.Helpers;
 
 namespace Social.Test.Integration.UserProfileTest.QueryTest.GetFriendRequestsTest;
 
@@ -28,9 +29,9 @@ public class GetFriendRequestsQueryHandlerTest : IntegrationTestBase
     public async Task Handle_Given_Valid_Query_Should_Return_FriendRequests()
     {
         // Arrange
-        var user = new UserProfile(Guid.NewGuid(), "Kristian", UserTag.Create("Kristian"));
-        var friend = new UserProfile(Guid.NewGuid(), "Friend", UserTag.Create("Friend"));
-        var friend2 = new UserProfile(Guid.NewGuid(), "Friend2", UserTag.Create("Friend2"));
+        var user = new UserProfile(Guid.NewGuid(), "Kristian", UserTag.Create(UserTags.New()));
+        var friend = new UserProfile(Guid.NewGuid(), "Friend", UserTag.Create(UserTags.New()));
+        var friend2 = new UserProfile(Guid.NewGuid(), "Friend2", UserTag.Create(UserTags.New()));
 
         Db.Add(user);
         Db.Add(friend);
@@ -58,8 +59,8 @@ public class GetFriendRequestsQueryHandlerTest : IntegrationTestBase
     public async Task Handle_Given_Requester_With_Avatar_Should_Return_AvatarKey()
     {
         // Arrange
-        var user = new UserProfile(Guid.NewGuid(), "Kristian", UserTag.Create("Kristian"));
-        var friend = new UserProfile(Guid.NewGuid(), "Friend", UserTag.Create("Friend"));
+        var user = new UserProfile(Guid.NewGuid(), "Kristian", UserTag.Create(UserTags.New()));
+        var friend = new UserProfile(Guid.NewGuid(), "Friend", UserTag.Create(UserTags.New()));
         var avatar = friend.GetOrCreateAvatar("image/png");
 
         Db.Add(user);
@@ -84,7 +85,7 @@ public class GetFriendRequestsQueryHandlerTest : IntegrationTestBase
     public async Task Handle_Given_Valid_Query_But_No_Friends_Should_Return_Empty_List()
     {
         // Arrange
-        var user = new UserProfile(Guid.NewGuid(), "Kristian", UserTag.Create("Kristian"));
+        var user = new UserProfile(Guid.NewGuid(), "Kristian", UserTag.Create(UserTags.New()));
 
         Db.Add(user);
         await Db.SaveChangesAsync();

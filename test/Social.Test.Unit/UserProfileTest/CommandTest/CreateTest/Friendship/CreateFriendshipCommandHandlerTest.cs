@@ -10,6 +10,7 @@ using Social.Domain.Interfaces;
 using Social.Domain.Services;
 using Social.Domain.ValueObjects;
 using Xunit;
+using Social.Test.Unit.Setup.Helpers;
 
 namespace Social.Test.Unit.UserProfileTest.CommandTest.CreateTest.Friendship;
 
@@ -60,7 +61,7 @@ public class CreateFriendshipCommandHandlerTest
             FriendTag = "tag",
             TenantId = Guid.NewGuid()
         };
-        var friend = new UserProfile(Guid.NewGuid(), "eric", UserTag.Create("eric"));
+        var friend = new UserProfile(Guid.NewGuid(), "eric", UserTag.Create(UserTags.New()));
 
         A.CallTo(() => _fakeRepo.GetSingleAsync(A<ISpecification<UserProfile>>._, A<CancellationToken>._))
             .ReturnsNextFromSequence<UserProfile?>(friend, null);
@@ -82,8 +83,8 @@ public class CreateFriendshipCommandHandlerTest
             FriendTag = "tag",
             TenantId = Guid.NewGuid()
         };
-        var user = new UserProfile(Guid.NewGuid(), "eric", UserTag.Create("eric"));
-        var friend = new UserProfile(Guid.NewGuid(), "friend", UserTag.Create("friend"));
+        var user = new UserProfile(Guid.NewGuid(), "eric", UserTag.Create(UserTags.New()));
+        var friend = new UserProfile(Guid.NewGuid(), "friend", UserTag.Create(UserTags.New()));
 
         A.CallTo(() => _fakeRepo.GetSingleAsync(A<ISpecification<UserProfile>>._, A<CancellationToken>._))
             .ReturnsNextFromSequence<UserProfile?>(friend, user);
@@ -106,8 +107,8 @@ public class CreateFriendshipCommandHandlerTest
             FriendTag = "tag",
             TenantId = Guid.NewGuid()
         };
-        var user = new UserProfile(Guid.NewGuid(), "eric", UserTag.Create("eric"));
-        var friend = new UserProfile(Guid.NewGuid(), "friend", UserTag.Create("friend"));
+        var user = new UserProfile(Guid.NewGuid(), "eric", UserTag.Create(UserTags.New()));
+        var friend = new UserProfile(Guid.NewGuid(), "friend", UserTag.Create(UserTags.New()));
 
         A.CallTo(() => _fakeRepo.GetSingleAsync(A<ISpecification<UserProfile>>._, A<CancellationToken>._))
             .ReturnsNextFromSequence<UserProfile?>(friend, user);
@@ -129,8 +130,8 @@ public class CreateFriendshipCommandHandlerTest
             FriendTag = "tag",
             TenantId = Guid.NewGuid()
         };
-        var user = new UserProfile(Guid.NewGuid(), "eric", UserTag.Create("eric"));
-        var friend = new UserProfile(Guid.NewGuid(), "friend", UserTag.Create("friend"));
+        var user = new UserProfile(Guid.NewGuid(), "eric", UserTag.Create(UserTags.New()));
+        var friend = new UserProfile(Guid.NewGuid(), "friend", UserTag.Create(UserTags.New()));
         friend.TogglePrivacy(true);
 
         A.CallTo(() => _fakeRepo.GetSingleAsync(A<ISpecification<UserProfile>>._, A<CancellationToken>._))
@@ -155,8 +156,8 @@ public class CreateFriendshipCommandHandlerTest
             FriendTag = "tag",
             TenantId = Guid.NewGuid()
         };
-        var user = new UserProfile(Guid.NewGuid(), "eric", UserTag.Create("eric"));
-        var friend = new UserProfile(Guid.NewGuid(), "friend", UserTag.Create("friend"));
+        var user = new UserProfile(Guid.NewGuid(), "eric", UserTag.Create(UserTags.New()));
+        var friend = new UserProfile(Guid.NewGuid(), "friend", UserTag.Create(UserTags.New()));
 
         A.CallTo(() => _fakeRepo.GetSingleAsync(A<ISpecification<UserProfile>>._, A<CancellationToken>._))
             .ReturnsNextFromSequence<UserProfile?>(friend, user);

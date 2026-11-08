@@ -7,6 +7,7 @@ using Social.Application.Features.Friendships.Queries.GetBlockedUserProfiles;
 using Social.Domain.Aggregates;
 using Social.Domain.ValueObjects;
 using Social.Test.Integration.Setup;
+using Social.Test.Integration.Setup.Helpers;
 
 namespace Social.Test.Integration.UserProfileTest.QueryTest.GetBlockedUserProfiles;
 
@@ -26,9 +27,9 @@ public class GetBlockedUserProfilesQueryHandlerTest : IntegrationTestBase
     public async Task Handle_Given_Valid_Query_Should_Return_BlockedUserProfiles()
     {
         // Arrange
-        var userProfile = new UserProfile(Guid.NewGuid(), "James", UserTag.Create("James"));
-        var blockedUserProfile = new UserProfile(Guid.NewGuid(), "blocked1", UserTag.Create("blocked1"));
-        var blockedUserProfile2 = new UserProfile(Guid.NewGuid(), "blocked2", UserTag.Create("blocked2"));
+        var userProfile = new UserProfile(Guid.NewGuid(), "James", UserTag.Create(UserTags.New()));
+        var blockedUserProfile = new UserProfile(Guid.NewGuid(), "blocked1", UserTag.Create(UserTags.New()));
+        var blockedUserProfile2 = new UserProfile(Guid.NewGuid(), "blocked2", UserTag.Create(UserTags.New()));
 
         userProfile.BlockUser(blockedUserProfile.Id);
         userProfile.BlockUser(blockedUserProfile2.Id);
@@ -69,7 +70,7 @@ public class GetBlockedUserProfilesQueryHandlerTest : IntegrationTestBase
     public async Task Handle_Given_Valid_Query_But_No_BlockedUserProfiles_Should_Return_Empty()
     {
         // Arrange
-        var userProfile = new UserProfile(Guid.NewGuid(), "James", UserTag.Create("James"));
+        var userProfile = new UserProfile(Guid.NewGuid(), "James", UserTag.Create(UserTags.New()));
         await Db.AddAsync(userProfile);
         await Db.SaveChangesAsync();
 

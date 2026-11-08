@@ -11,6 +11,7 @@ using Social.Domain.Aggregates;
 using Social.Domain.Services;
 using Social.Domain.ValueObjects;
 using Xunit;
+using Social.Test.Unit.Setup.Helpers;
 
 namespace Social.Test.Unit.UserProfileTest.ConsumerTest;
 
@@ -61,7 +62,7 @@ public class RollbackUserProfileDeleteConsumerTest
             .With(x => x.Services, [ServiceType.UserManagementService])
             .Create();
 
-        var user = new UserProfile(Guid.NewGuid(), "james", UserTag.Create("james"));
+        var user = new UserProfile(Guid.NewGuid(), "james", UserTag.Create(UserTags.New()));
         A.CallTo(() => _fakeRepo.GetSingleAsync(A<UserProfileSpec>._, A<CancellationToken>._)).Returns(user);
 
         var fakeConsumeContext = A.Fake<ConsumeContext<UserDeleteFailedMessage>>();

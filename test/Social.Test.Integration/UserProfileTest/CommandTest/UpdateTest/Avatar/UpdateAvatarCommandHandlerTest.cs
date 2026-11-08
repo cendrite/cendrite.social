@@ -35,7 +35,7 @@ public class UpdateAvatarCommandHandlerTest : IntegrationTestBase
     public async Task Handle_ValidUpdateCommand_Should_Update_ProfilePic_And_Return_Dto()
     {
         // Arrange
-        var user = new UserProfile(Guid.NewGuid(), "TestUser", UserTag.Create("TestUser"));
+        var user = new UserProfile(Guid.NewGuid(), "TestUser", UserTag.Create(UserTags.New()));
         Db.UserProfile.Add(user);
         await Db.SaveChangesAsync();
 
@@ -64,7 +64,7 @@ public class UpdateAvatarCommandHandlerTest : IntegrationTestBase
     public async Task Handle_ValidUpdateCommand_GivenExistingAvatar_ShouldOverride_WhenUpdating()
     {
         // Arrange
-        var user = new UserProfile(Guid.NewGuid(), "TestUser", UserTag.Create("TestUser"));
+        var user = new UserProfile(Guid.NewGuid(), "TestUser", UserTag.Create(UserTags.New()));
         Db.UserProfile.Add(user);
         await Db.SaveChangesAsync();
 
@@ -105,7 +105,7 @@ public class UpdateAvatarCommandHandlerTest : IntegrationTestBase
     public async Task Handle_Given_Spoofed_ContentType_Should_Store_Detected_ContentType()
     {
         // Arrange
-        var user = new UserProfile(Guid.NewGuid(), "TestUser", UserTag.Create("TestUser"));
+        var user = new UserProfile(Guid.NewGuid(), "TestUser", UserTag.Create(UserTags.New()));
         Db.UserProfile.Add(user);
         await Db.SaveChangesAsync();
 
@@ -128,7 +128,7 @@ public class UpdateAvatarCommandHandlerTest : IntegrationTestBase
     public async Task Handle_Invalid_Command_WrongID_Should_Return_NotFound_Fail_Result()
     {
         // Arrange
-        var user = new UserProfile(Guid.NewGuid(), "TestUser", UserTag.Create("TestUser"));
+        var user = new UserProfile(Guid.NewGuid(), "TestUser", UserTag.Create(UserTags.New()));
         Db.UserProfile.Add(user);
         await Db.SaveChangesAsync();
 

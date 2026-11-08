@@ -10,6 +10,7 @@ using Social.Domain.Aggregates;
 using Social.Domain.Services;
 using Social.Domain.ValueObjects;
 using Xunit;
+using Social.Test.Unit.Setup.Helpers;
 
 namespace Social.Test.Unit.UserProfileTest.ConsumerTest
 {
@@ -38,9 +39,9 @@ namespace Social.Test.Unit.UserProfileTest.ConsumerTest
                 .With(x => x.Username, "testUser")
                 .Create();
             
-            var profile = new UserProfile(message.UserId, message.Username, UserTag.Create(message.Username));
+            var profile = new UserProfile(message.UserId, message.Username, UserTag.Create(UserTags.New()));
 
-            A.CallTo(() => _fakeUserProfileLifecycleService.CreateUserProfile(message.UserId, message.Username)).Returns(profile);
+            A.CallTo(() => _fakeUserProfileLifecycleService.CreateUserProfile(message.UserId, message.Username, message.UserTag)).Returns(profile);
 
             A.CallTo(() => _fakeUserProfileRepo.CreateAsync(profile, A<CancellationToken>._)).Returns(Task.CompletedTask);
 
@@ -53,7 +54,7 @@ namespace Social.Test.Unit.UserProfileTest.ConsumerTest
             await _sut.Consume(fakeConsumeContext);
 
             // Assert
-            A.CallTo(() => _fakeUserProfileLifecycleService.CreateUserProfile(message.UserId, message.Username)).MustHaveHappenedOnceExactly();
+            A.CallTo(() => _fakeUserProfileLifecycleService.CreateUserProfile(message.UserId, message.Username, message.UserTag)).MustHaveHappenedOnceExactly();
             A.CallTo(() => _fakeUserProfileRepo.CreateAsync(profile, A<CancellationToken>._)).MustHaveHappenedOnceExactly();
             A.CallTo(() => _fakeUnitOfWork.SaveChangesAsync(CancellationToken.None)).MustHaveHappenedOnceExactly();
         }
@@ -69,7 +70,7 @@ namespace Social.Test.Unit.UserProfileTest.ConsumerTest
             var fakeConsumeContext = A.Fake<ConsumeContext<CreateUserProfileMessage>>();
             A.CallTo(() => fakeConsumeContext.Message).Returns(message);
 
-            A.CallTo(() => _fakeUserProfileLifecycleService.CreateUserProfile(message.UserId, message.Username))
+            A.CallTo(() => _fakeUserProfileLifecycleService.CreateUserProfile(message.UserId, message.Username, message.UserTag))
                 .Throws(new Exception("Service exception"));
 
             // Act
@@ -87,12 +88,12 @@ namespace Social.Test.Unit.UserProfileTest.ConsumerTest
                 .With(x => x.Username, "testUser")
                 .Create();
             
-            var profile = new UserProfile(message.UserId, message.Username, UserTag.Create(message.Username));
+            var profile = new UserProfile(message.UserId, message.Username, UserTag.Create(UserTags.New()));
 
             var fakeConsumeContext = A.Fake<ConsumeContext<CreateUserProfileMessage>>();
             A.CallTo(() => fakeConsumeContext.Message).Returns(message);
 
-            A.CallTo(() => _fakeUserProfileLifecycleService.CreateUserProfile(message.UserId, message.Username)).Returns(profile);
+            A.CallTo(() => _fakeUserProfileLifecycleService.CreateUserProfile(message.UserId, message.Username, message.UserTag)).Returns(profile);
             A.CallTo(() => _fakeUserProfileRepo.CreateAsync(profile, A<CancellationToken>._)).Throws(new Exception("Repository exception"));
 
             // Act
@@ -110,12 +111,12 @@ namespace Social.Test.Unit.UserProfileTest.ConsumerTest
                 .With(x => x.Username, "testUser")
                 .Create();
             
-            var profile = new UserProfile(message.UserId, message.Username, UserTag.Create(message.Username));
+            var profile = new UserProfile(message.UserId, message.Username, UserTag.Create(UserTags.New()));
 
             var fakeConsumeContext = A.Fake<ConsumeContext<CreateUserProfileMessage>>();
             A.CallTo(() => fakeConsumeContext.Message).Returns(message);
 
-            A.CallTo(() => _fakeUserProfileLifecycleService.CreateUserProfile(message.UserId, message.Username)).Returns(profile);
+            A.CallTo(() => _fakeUserProfileLifecycleService.CreateUserProfile(message.UserId, message.Username, message.UserTag)).Returns(profile);
             A.CallTo(() => _fakeUserProfileRepo.CreateAsync(profile, A<CancellationToken>._)).Returns(Task.CompletedTask);
             A.CallTo(() => _fakeUnitOfWork.SaveChangesAsync(CancellationToken.None)).Throws(new Exception("UnitOfWork exception"));
 

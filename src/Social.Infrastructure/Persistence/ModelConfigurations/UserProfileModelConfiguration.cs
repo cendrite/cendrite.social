@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Social.Domain.Entities;
+using Social.Domain.Constants;
 
 namespace Social.Infrastructure.Persistence.ModelConfigurations;
 
@@ -26,7 +27,7 @@ public class UserProfileModelConfiguration : BaseModelConfiguration<UserProfile>
         {
             y.Property(x => x.Tag)
                 .HasColumnName("tag")
-                .HasMaxLength(58) // 50 (max username length) + 1 (hash) + 6 (number) + 1 (letter)
+                .HasMaxLength(UserTagConstants.Length)
                 .IsRequired();
         });
 

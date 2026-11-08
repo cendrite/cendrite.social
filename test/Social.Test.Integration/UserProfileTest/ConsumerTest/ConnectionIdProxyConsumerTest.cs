@@ -10,6 +10,7 @@ using Social.Domain.Aggregates;
 using Social.Domain.ValueObjects;
 using Social.Infrastructure.Persistence.Context;
 using Social.Test.Integration.Setup;
+using Social.Test.Integration.Setup.Helpers;
 
 namespace Social.Test.Integration.UserProfileTest.ConsumerTest;
 
@@ -31,9 +32,9 @@ public class ConnectionIdProxyConsumerTest : IntegrationTestBase
     public async Task Should_Call_ConnectionIdProvider_For_Single_Tenant()
     {
         // Arrange
-        var userProfile = new UserProfile(Guid.NewGuid(), "TestUser", UserTag.Create("TestUser"));
+        var userProfile = new UserProfile(Guid.NewGuid(), "TestUser", UserTag.Create(UserTags.New()));
 
-        var friendProfile = new UserProfile(Guid.NewGuid(), "FriendUser", UserTag.Create("FriendUser"));
+        var friendProfile = new UserProfile(Guid.NewGuid(), "FriendUser", UserTag.Create(UserTags.New()));
 
         userProfile.AddFriendship(friendProfile);
         Db.UserProfile.Add(userProfile);

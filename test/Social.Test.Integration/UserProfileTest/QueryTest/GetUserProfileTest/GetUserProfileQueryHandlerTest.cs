@@ -7,6 +7,7 @@ using Social.Application.Features.UserProfile.Queries.GetUserProfile;
 using Social.Domain.Aggregates;
 using Social.Domain.ValueObjects;
 using Social.Test.Integration.Setup;
+using Social.Test.Integration.Setup.Helpers;
 
 namespace Social.Test.Integration.UserProfileTest.QueryTest.GetUserProfileTest;
 
@@ -26,7 +27,7 @@ public class GetUserProfileQueryHandlerTest : IntegrationTestBase
     public async Task Handle_Query_With_Valid_ID_Should_Return_UserProfile()
     {
         // Arrange
-        var userProfile = new UserProfile(Guid.NewGuid(), "David", UserTag.Create("David"));
+        var userProfile = new UserProfile(Guid.NewGuid(), "David", UserTag.Create(UserTags.New()));
         Db.UserProfile.Add(userProfile);
         await Db.SaveChangesAsync();
 

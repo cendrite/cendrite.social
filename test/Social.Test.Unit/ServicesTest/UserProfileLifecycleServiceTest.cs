@@ -1,6 +1,7 @@
 ﻿using FluentAssertions;
 using Social.Domain.Services;
 using Xunit;
+using Social.Test.Unit.Setup.Helpers;
 
 namespace Social.Test.Unit.ServicesTest
 {
@@ -16,7 +17,7 @@ namespace Social.Test.Unit.ServicesTest
             var username = "TestUser";
 
             // Act
-            var userProfile = _sut.CreateUserProfile(userId, username);
+            var userProfile = _sut.CreateUserProfile(userId, username, UserTags.New());
 
             // Assert
             userProfile.Should().NotBeNull();
@@ -25,18 +26,17 @@ namespace Social.Test.Unit.ServicesTest
         }
 
         [Fact]
-        public void CreateUserProfile_ShouldGenerateCorrectUserTag()
+        public void CreateUserProfile_ShouldUseTheTagFromIdentity()
         {
             // Arrange
             var userId = Guid.NewGuid();
-            var username = "AnotherUser";
+            var userTag = UserTags.New();
 
             // Act
-            var userProfile = _sut.CreateUserProfile(userId, username);
+            var userProfile = _sut.CreateUserProfile(userId, "AnotherUser", userTag);
 
             // Assert
-            userProfile.UserTag.Should().NotBeNull();
-            userProfile.UserTag.Tag.Should().Contain(username);
+            userProfile.UserTag.Tag.Should().Be(userTag);
         }
     }
 }

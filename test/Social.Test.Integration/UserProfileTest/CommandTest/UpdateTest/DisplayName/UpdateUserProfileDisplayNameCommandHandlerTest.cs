@@ -8,6 +8,7 @@ using Social.Application.Features.UserProfile.Commands.Update.DisplayName;
 using Social.Domain.Aggregates;
 using Social.Domain.ValueObjects;
 using Social.Test.Integration.Setup;
+using Social.Test.Integration.Setup.Helpers;
 
 namespace Social.Test.Integration.UserProfileTest.CommandTest.UpdateTest.DisplayName;
 
@@ -28,7 +29,7 @@ public class UpdateUserProfileDisplayNameCommandHandlerTest : IntegrationTestBas
     public async Task Handle_Given_Valid_Command_Should_Update_UserProfile_DisplayName()
     {
         // Arrange
-        var userprofile = new UserProfile(Guid.NewGuid(), "david", UserTag.Create("david"));
+        var userprofile = new UserProfile(Guid.NewGuid(), "david", UserTag.Create(UserTags.New()));
         Db.UserProfile.Add(userprofile);
         await Db.SaveChangesAsync();
 
@@ -70,7 +71,7 @@ public class UpdateUserProfileDisplayNameCommandHandlerTest : IntegrationTestBas
     public async Task Handle_Given_Invalid_Command_Should_Not_Update_UserProfile_DisplayName()
     {
         // Arrange
-        var userprofile = new UserProfile(Guid.NewGuid(), "david", UserTag.Create("david"));
+        var userprofile = new UserProfile(Guid.NewGuid(), "david", UserTag.Create(UserTags.New()));
         Db.UserProfile.Add(userprofile);
         await Db.SaveChangesAsync();
 

@@ -6,6 +6,7 @@ using FluentAssertions;
 using Social.Domain.Aggregates;
 using Social.Domain.ValueObjects;
 using Xunit;
+using Social.Test.Unit.Setup.Helpers;
 
 namespace Social.Test.Unit.UserProfileTest.QueryTest.GetUserProfile;
 
@@ -41,7 +42,7 @@ public class GetUserProfileQueryHandlerTest
     {
         // Arrange
         var query = new GetUserProfileQuery { TenantId = Guid.NewGuid() };
-        var userProfile = new UserProfile(Guid.NewGuid(), "David", UserTag.Create("David"));
+        var userProfile = new UserProfile(Guid.NewGuid(), "David", UserTag.Create(UserTags.New()));
 
         A.CallTo(() => _fakeRepository.GetSingleAsync(A<ISpecification<UserProfile>>._, A<CancellationToken>._)).Returns(userProfile);
 
@@ -61,7 +62,7 @@ public class GetUserProfileQueryHandlerTest
     {
         // Arrange
         var query = new GetUserProfileQuery { TenantId = Guid.NewGuid() };
-        var userProfile = new UserProfile(Guid.NewGuid(), "David", UserTag.Create("David"));
+        var userProfile = new UserProfile(Guid.NewGuid(), "David", UserTag.Create(UserTags.New()));
         userProfile.GetOrCreateAvatar("image/png");
 
         A.CallTo(() => _fakeRepository.GetSingleAsync(A<ISpecification<UserProfile>>._, A<CancellationToken>._)).Returns(userProfile);
@@ -83,7 +84,7 @@ public class GetUserProfileQueryHandlerTest
     {
         // Arrange
         var query = new GetUserProfileQuery { TenantId = Guid.NewGuid() };
-        var userProfile = new UserProfile(Guid.NewGuid(), "David", UserTag.Create("David"));
+        var userProfile = new UserProfile(Guid.NewGuid(), "David", UserTag.Create(UserTags.New()));
         userProfile.GetOrCreateAvatar("image/png");
 
         A.CallTo(() => _fakeRepository.GetSingleAsync(A<ISpecification<UserProfile>>._, A<CancellationToken>._)).Returns(userProfile);

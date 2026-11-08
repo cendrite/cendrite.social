@@ -13,6 +13,7 @@ using Social.Domain.Services;
 using Social.Domain.ValueObjects;
 using Social.Test.Integration.Setup;
 using Xunit;
+using Social.Test.Integration.Setup.Helpers;
 
 // ReSharper disable EntityFramework.NPlusOne.IncompleteDataQuery
 // ReSharper disable EntityFramework.NPlusOne.IncompleteDataUsage
@@ -37,8 +38,8 @@ public class CreateFriendshipCommandHandlerTest : IntegrationTestBase
     public async void Handle_Given_Valid_Command_Should_Create_Friendship_And_Return_Result_Ok()
     {
         // Arrange
-        var user = new UserProfile(Guid.NewGuid(), "James", UserTag.Create("James"));
-        var friend = new UserProfile(Guid.NewGuid(), "John", UserTag.Create("John"));
+        var user = new UserProfile(Guid.NewGuid(), "James", UserTag.Create(UserTags.New()));
+        var friend = new UserProfile(Guid.NewGuid(), "John", UserTag.Create(UserTags.New()));
         Db.UserProfile.AddRange(user, friend);
         await Db.SaveChangesAsync();
 
@@ -65,8 +66,8 @@ public class CreateFriendshipCommandHandlerTest : IntegrationTestBase
     public async void Handle_Given_Existing_Friendship_Should_Return_Error()
     {
         // Arrange
-        var user = new UserProfile(Guid.NewGuid(), "James", UserTag.Create("James"));
-        var friend = new UserProfile(Guid.NewGuid(), "John", UserTag.Create("John"));
+        var user = new UserProfile(Guid.NewGuid(), "James", UserTag.Create(UserTags.New()));
+        var friend = new UserProfile(Guid.NewGuid(), "John", UserTag.Create(UserTags.New()));
         Db.UserProfile.AddRange(user, friend);
         Db.Friendship.Add(new(user.Id, friend.Id));
         await Db.SaveChangesAsync();
@@ -89,7 +90,7 @@ public class CreateFriendshipCommandHandlerTest : IntegrationTestBase
     public async void Handle_Given_Invalid_UserId_Should_Return_NotFound()
     {
         // Arrange
-        var friend = new UserProfile(Guid.NewGuid(), "John", UserTag.Create("John"));
+        var friend = new UserProfile(Guid.NewGuid(), "John", UserTag.Create(UserTags.New()));
         Db.UserProfile.Add(friend);
         await Db.SaveChangesAsync();
 
@@ -111,7 +112,7 @@ public class CreateFriendshipCommandHandlerTest : IntegrationTestBase
     public async void Handle_Given_Invalid_FriendTag_Should_Return_NotFound()
     {
         // Arrange
-        var user = new UserProfile(Guid.NewGuid(), "James", UserTag.Create("James"));
+        var user = new UserProfile(Guid.NewGuid(), "James", UserTag.Create(UserTags.New()));
         Db.UserProfile.Add(user);
         await Db.SaveChangesAsync();
 
@@ -133,8 +134,8 @@ public class CreateFriendshipCommandHandlerTest : IntegrationTestBase
     public async void Handle_Given_Private_Friend_Should_Return_NotFound()
     {
         // Arrange
-        var user = new UserProfile(Guid.NewGuid(), "James", UserTag.Create("James"));
-        var friend = new UserProfile(Guid.NewGuid(), "John", UserTag.Create("John"));
+        var user = new UserProfile(Guid.NewGuid(), "James", UserTag.Create(UserTags.New()));
+        var friend = new UserProfile(Guid.NewGuid(), "John", UserTag.Create(UserTags.New()));
         friend.TogglePrivacy(true);
         Db.UserProfile.AddRange(user, friend);
         await Db.SaveChangesAsync();
@@ -158,8 +159,8 @@ public class CreateFriendshipCommandHandlerTest : IntegrationTestBase
     public async void Handle_Given_Friend_Blocked_User_Should_Return_NotFound()
     {
         // Arrange
-        var user = new UserProfile(Guid.NewGuid(), "James", UserTag.Create("James"));
-        var friend = new UserProfile(Guid.NewGuid(), "John", UserTag.Create("John"));
+        var user = new UserProfile(Guid.NewGuid(), "James", UserTag.Create(UserTags.New()));
+        var friend = new UserProfile(Guid.NewGuid(), "John", UserTag.Create(UserTags.New()));
         friend.BlockUser(user.Id);
         Db.UserProfile.AddRange(user, friend);
         await Db.SaveChangesAsync();
@@ -183,8 +184,8 @@ public class CreateFriendshipCommandHandlerTest : IntegrationTestBase
     public async void Handle_Given_User_Blocked_Friend_Should_Return_NotFound()
     {
         // Arrange
-        var user = new UserProfile(Guid.NewGuid(), "James", UserTag.Create("James"));
-        var friend = new UserProfile(Guid.NewGuid(), "John", UserTag.Create("John"));
+        var user = new UserProfile(Guid.NewGuid(), "James", UserTag.Create(UserTags.New()));
+        var friend = new UserProfile(Guid.NewGuid(), "John", UserTag.Create(UserTags.New()));
         user.BlockUser(friend.Id);
         Db.UserProfile.AddRange(user, friend);
         await Db.SaveChangesAsync();

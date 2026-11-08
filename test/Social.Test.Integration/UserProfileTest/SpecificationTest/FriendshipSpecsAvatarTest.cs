@@ -6,6 +6,7 @@ using Social.Domain.Aggregates;
 using Social.Domain.ValueObjects;
 using Social.Infrastructure.Persistence.Context;
 using Social.Test.Integration.Setup;
+using Social.Test.Integration.Setup.Helpers;
 
 namespace Social.Test.Integration.UserProfileTest.SpecificationTest;
 
@@ -21,8 +22,8 @@ public class FriendshipSpecsAvatarTest : IntegrationTestBase
 
     private async Task<(UserProfile user, UserProfile requester)> SeedRequesterWithAvatarAsync()
     {
-        var user = new UserProfile(Guid.NewGuid(), "Kristian", UserTag.Create("Kristian"));
-        var requester = new UserProfile(Guid.NewGuid(), "Friend", UserTag.Create("Friend"));
+        var user = new UserProfile(Guid.NewGuid(), "Kristian", UserTag.Create(UserTags.New()));
+        var requester = new UserProfile(Guid.NewGuid(), "Friend", UserTag.Create(UserTags.New()));
         requester.GetOrCreateAvatar("image/png");
 
         Db.Add(user);

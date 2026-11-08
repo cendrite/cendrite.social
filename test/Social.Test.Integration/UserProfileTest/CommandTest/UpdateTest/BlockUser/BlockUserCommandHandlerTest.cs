@@ -10,6 +10,7 @@ using Social.Domain.Common;
 using Social.Domain.Services;
 using Social.Domain.ValueObjects;
 using Social.Test.Integration.Setup;
+using Social.Test.Integration.Setup.Helpers;
 
 // ReSharper disable EntityFramework.NPlusOne.IncompleteDataQuery
 // ReSharper disable EntityFramework.NPlusOne.IncompleteDataUsage
@@ -34,7 +35,7 @@ public class BlockUserCommandHandlerTest : IntegrationTestBase
     public async Task Handle_Given_Invalid_Id_Should_Return_NotFound()
     {
         // Arrange
-        var blockuser = new UserProfile(Guid.NewGuid(), "James", UserTag.Create("James"));
+        var blockuser = new UserProfile(Guid.NewGuid(), "James", UserTag.Create(UserTags.New()));
         await Db.AddAsync(blockuser);
         await Db.SaveChangesAsync();
 
@@ -56,7 +57,7 @@ public class BlockUserCommandHandlerTest : IntegrationTestBase
     public async Task Handle_Given_Invalid_Tag_Should_Return_NotFound()
     {
         // Arrange
-        var user = new UserProfile(Guid.NewGuid(), "James", UserTag.Create("James"));
+        var user = new UserProfile(Guid.NewGuid(), "James", UserTag.Create(UserTags.New()));
         await Db.AddAsync(user);
         await Db.SaveChangesAsync();
 
@@ -78,8 +79,8 @@ public class BlockUserCommandHandlerTest : IntegrationTestBase
     public async Task Handle_Given_Valid_Request_Should_BlockUser_And_Delete_Friendship_And_Return_Success()
     {
         // Arrange
-        var user = new UserProfile(Guid.NewGuid(), "James", UserTag.Create("James"));
-        var blockedUser = new UserProfile(Guid.NewGuid(), "John", UserTag.Create("John"));
+        var user = new UserProfile(Guid.NewGuid(), "James", UserTag.Create(UserTags.New()));
+        var blockedUser = new UserProfile(Guid.NewGuid(), "John", UserTag.Create(UserTags.New()));
         user.AddFriendship(blockedUser);
         await Db.AddAsync(user);
         await Db.AddAsync(blockedUser);
