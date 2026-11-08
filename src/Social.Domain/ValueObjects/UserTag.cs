@@ -1,4 +1,5 @@
-﻿using Social.Domain.Abstractions;
+using Social.Domain.Abstractions;
+using Social.Domain.Constants;
 
 namespace Social.Domain.ValueObjects;
 
@@ -13,13 +14,12 @@ public class UserTag : ValueObject
         Tag = tag;
     }
 
-    public static UserTag Create(string displayName)
+    public static UserTag Create(string tag)
     {
-        var tagGuid = Guid.NewGuid();
-        var bytes = tagGuid.ToByteArray();
-        var numberPortion = Math.Abs(BitConverter.ToInt32(bytes, 0) % 1000000);
-        var letterPortion = (char)('A' + (bytes[4] % 26));
-        return new UserTag($"{displayName}#{numberPortion:D6}{letterPortion}");
+        if (tag.Length != UserTagConstants.Length || !tag.All(char.IsAsciiDigit))
+            throw new ArgumentException($"A user tag must be {UserTagConstants.Length} digits.", nameof(tag));
+
+        return new UserTag(tag);
     }
 
     protected override IEnumerable<object> GetEqualityComponents()
