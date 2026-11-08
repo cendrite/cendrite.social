@@ -32,6 +32,7 @@ public class CreateUserProfileConsumerTest : IntegrationTestBase
         // Arrange
         var request = Fixture.Build<CreateUserProfileMessage>()
             .With(x => x.Username, "testUser")
+            .With(x => x.UserTag, "482177301593")
             .Create();
 
 
@@ -45,5 +46,6 @@ public class CreateUserProfileConsumerTest : IntegrationTestBase
         Db.UserProfile.Count().Should().Be(1);
         Db.UserProfile.First().Id.Should().Be(request.UserId);
         Db.UserProfile.First().Username.Should().Be(request.Username);
+        Db.UserProfile.First().UserTag.Tag.Should().Be("482177301593");
     }
 }

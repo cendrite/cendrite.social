@@ -12,6 +12,7 @@ using Social.Domain.Interfaces;
 using Social.Domain.ValueObjects;
 using Social.Test.Integration.Setup;
 using Xunit;
+using Social.Test.Integration.Setup.Helpers;
 
 namespace Social.Test.Integration.UserProfileTest.CommandTest.DeleteTest.Friendship;
 
@@ -32,9 +33,9 @@ public class DeleteFriendshipCommandHandlerTest : IntegrationTestBase
     public async Task Handle_Given_Valid_Command_Should_Delete_Friendship()
     {
         // Arrange
-        var userProfile = new UserProfile(Guid.NewGuid(), "TestUser", UserTag.Create("TestUser"));
+        var userProfile = new UserProfile(Guid.NewGuid(), "TestUser", UserTag.Create(UserTags.New()));
 
-        var friendProfile = new UserProfile(Guid.NewGuid(), "FriendUser", UserTag.Create("FriendUser"));
+        var friendProfile = new UserProfile(Guid.NewGuid(), "FriendUser", UserTag.Create(UserTags.New()));
 
         userProfile.AddFriendship(friendProfile);
         Db.UserProfile.Add(userProfile);
@@ -80,9 +81,9 @@ public class DeleteFriendshipCommandHandlerTest : IntegrationTestBase
     public async Task Handle_Given_Command_With_No_Friendship_Should_Return_Result_Fail()
     {
         // Arrange
-        var userProfile = new UserProfile(Guid.NewGuid(), "TestUser", UserTag.Create("TestUser"));
+        var userProfile = new UserProfile(Guid.NewGuid(), "TestUser", UserTag.Create(UserTags.New()));
 
-        var friendProfile = new UserProfile(Guid.NewGuid(), "FriendUser", UserTag.Create("FriendUser"));
+        var friendProfile = new UserProfile(Guid.NewGuid(), "FriendUser", UserTag.Create(UserTags.New()));
 
         //NOTE: No friendship added
         Db.UserProfile.Add(userProfile);

@@ -8,6 +8,7 @@ using Social.Domain.Aggregates;
 using Social.Domain.Services;
 using Social.Domain.ValueObjects;
 using Social.Test.Integration.Setup;
+using Social.Test.Integration.Setup.Helpers;
 
 namespace Social.Test.Integration.UserProfileTest.CommandTest.UpdateTest.UnblockUser;
 
@@ -42,7 +43,7 @@ public class UnblockUserCommandHandlerTest : IntegrationTestBase
     public async void Handle_WhenUserToUnblockNotFound_Returns_Fail_NotFound()
     {
         // Arrange
-        var userProfile = new UserProfile(Guid.NewGuid(), "Dave", UserTag.Create("Dave"));
+        var userProfile = new UserProfile(Guid.NewGuid(), "Dave", UserTag.Create(UserTags.New()));
         await Db.AddAsync(userProfile);
         await Db.SaveChangesAsync();
 
@@ -60,8 +61,8 @@ public class UnblockUserCommandHandlerTest : IntegrationTestBase
     public async void Handle_WhenUserUnblocked_Returns_Ok()
     {
         // Arrange
-        var userProfile = new UserProfile(Guid.NewGuid(), "Dave", UserTag.Create("Dave"));
-        var userToUnblock = new UserProfile(Guid.NewGuid(), "Blocked", UserTag.Create("Blocked"));
+        var userProfile = new UserProfile(Guid.NewGuid(), "Dave", UserTag.Create(UserTags.New()));
+        var userToUnblock = new UserProfile(Guid.NewGuid(), "Blocked", UserTag.Create(UserTags.New()));
 
         userProfile.BlockUser(userToUnblock.Id);
         await Db.AddAsync(userProfile);

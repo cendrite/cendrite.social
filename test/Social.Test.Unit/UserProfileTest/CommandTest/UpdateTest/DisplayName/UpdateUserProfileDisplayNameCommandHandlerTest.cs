@@ -7,6 +7,7 @@ using Microsoft.Extensions.Logging;
 using Social.Domain.Aggregates;
 using Social.Domain.ValueObjects;
 using Xunit;
+using Social.Test.Unit.Setup.Helpers;
 
 namespace Social.Test.Unit.UserProfileTest.CommandTest.UpdateTest.DisplayName;
 
@@ -28,7 +29,7 @@ public class UpdateUserProfileDisplayNameCommandHandlerTest
     public async Task Handle_Given_ValidCommand_Should_ReturnDto_And_Result_Ok()
     {
         // Arrange
-        var testProfile = new UserProfile(Guid.NewGuid(), "dave", UserTag.Create("dave"));
+        var testProfile = new UserProfile(Guid.NewGuid(), "dave", UserTag.Create(UserTags.New()));
         var cmd = new UpdateUserProfileDisplayNameCommand
         {
             DisplayName = "validDisplayName",
@@ -75,7 +76,7 @@ public class UpdateUserProfileDisplayNameCommandHandlerTest
     public async Task Handle_Given_Command_With_Invalid_DisplayName_Should_Return_Result_Fail()
     {
         // Arrange
-        var testProfile = new UserProfile(Guid.NewGuid(), "dave", UserTag.Create("dave"));
+        var testProfile = new UserProfile(Guid.NewGuid(), "dave", UserTag.Create(UserTags.New()));
         var cmd = new UpdateUserProfileDisplayNameCommand
         {
             DisplayName = "", // invalid

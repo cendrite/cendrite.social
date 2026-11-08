@@ -9,6 +9,7 @@ using Social.Domain.Aggregates;
 using Social.Domain.Entities;
 using Social.Domain.ValueObjects;
 using Social.Test.Integration.Setup;
+using Social.Test.Integration.Setup.Helpers;
 
 namespace Social.Test.Integration.UserProfileTest.QueryTest.GetFriendsTest;
 
@@ -28,8 +29,8 @@ public class GetFriendsQueryHandlerTest : IntegrationTestBase
     public async Task Handle_Given_Valid_Query_Should_Return_Relevant_Friends()
     {
         // Arrange
-        var userProfile = new UserProfile(Guid.NewGuid(), "David", UserTag.Create("David"));
-        var friendProfile = new UserProfile(Guid.NewGuid(), "John", UserTag.Create("John"));
+        var userProfile = new UserProfile(Guid.NewGuid(), "David", UserTag.Create(UserTags.New()));
+        var friendProfile = new UserProfile(Guid.NewGuid(), "John", UserTag.Create(UserTags.New()));
         var friendship = new Friendship(userProfile.Id, friendProfile.Id);
         friendship.AcceptFriendship();
         Db.Add(userProfile);
@@ -53,8 +54,8 @@ public class GetFriendsQueryHandlerTest : IntegrationTestBase
     public async Task Handle_Given_Friends_Should_Return_Their_Connection_Ids()
     {
         // Arrange
-        var userProfile = new UserProfile(Guid.NewGuid(), "David", UserTag.Create("David"));
-        var friendProfile = new UserProfile(Guid.NewGuid(), "John", UserTag.Create("John"));
+        var userProfile = new UserProfile(Guid.NewGuid(), "David", UserTag.Create(UserTags.New()));
+        var friendProfile = new UserProfile(Guid.NewGuid(), "John", UserTag.Create(UserTags.New()));
         var friendship = new Friendship(userProfile.Id, friendProfile.Id);
         friendship.AcceptFriendship();
         Db.Add(userProfile);
@@ -82,8 +83,8 @@ public class GetFriendsQueryHandlerTest : IntegrationTestBase
     public async Task Handle_Given_Friend_Unknown_To_Identity_Should_Return_No_Connection_Ids()
     {
         // Arrange
-        var userProfile = new UserProfile(Guid.NewGuid(), "David", UserTag.Create("David"));
-        var friendProfile = new UserProfile(Guid.NewGuid(), "John", UserTag.Create("John"));
+        var userProfile = new UserProfile(Guid.NewGuid(), "David", UserTag.Create(UserTags.New()));
+        var friendProfile = new UserProfile(Guid.NewGuid(), "John", UserTag.Create(UserTags.New()));
         var friendship = new Friendship(userProfile.Id, friendProfile.Id);
         friendship.AcceptFriendship();
         Db.Add(userProfile);
@@ -108,7 +109,7 @@ public class GetFriendsQueryHandlerTest : IntegrationTestBase
     public async Task Handle_Given_No_Friends_Should_Not_Ask_For_Connection_Ids()
     {
         // Arrange
-        var userProfile = new UserProfile(Guid.NewGuid(), "David", UserTag.Create("David"));
+        var userProfile = new UserProfile(Guid.NewGuid(), "David", UserTag.Create(UserTags.New()));
         Db.Add(userProfile);
         await Db.SaveChangesAsync();
 
@@ -137,7 +138,7 @@ public class GetFriendsQueryHandlerTest : IntegrationTestBase
     public async Task Handle_Given_Empty_Friends_Should_Return_Empty_List()
     {
         // Arrange
-        var userProfile = new UserProfile(Guid.NewGuid(), "David", UserTag.Create("David"));
+        var userProfile = new UserProfile(Guid.NewGuid(), "David", UserTag.Create(UserTags.New()));
         Db.Add(userProfile);
         await Db.SaveChangesAsync();
 

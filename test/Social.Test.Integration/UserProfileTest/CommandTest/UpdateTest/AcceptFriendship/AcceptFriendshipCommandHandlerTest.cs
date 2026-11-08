@@ -15,6 +15,7 @@ using Social.Domain.Common;
 using Social.Domain.Interfaces;
 using Social.Domain.ValueObjects;
 using Xunit;
+using Social.Test.Integration.Setup.Helpers;
 
 namespace Social.Test.Integration.UserProfileTest.CommandTest.UpdateTest.AcceptFriendship;
 
@@ -40,8 +41,8 @@ public class AcceptFriendshipCommandHandlerTest
     public async Task Handle_Given_Valid_Command_Should_Create_Friendship_And_Return_ResultOk()
     {
         // Arrange
-        var userProfile = new UserProfile(Guid.NewGuid(), "dave", UserTag.Create("dave"));
-        var friendProfile = new UserProfile(Guid.NewGuid(), "Friend", UserTag.Create("Friend"));
+        var userProfile = new UserProfile(Guid.NewGuid(), "dave", UserTag.Create(UserTags.New()));
+        var friendProfile = new UserProfile(Guid.NewGuid(), "Friend", UserTag.Create(UserTags.New()));
         friendProfile.GetOrCreateAvatar("image/png");
         var command = new AcceptFriendshipCommand()
         {
@@ -98,7 +99,7 @@ public class AcceptFriendshipCommandHandlerTest
     public async Task Handle_Given_Invalid_FriendTag_Should_Return_ResultFail()
     {
         // Arrange
-        var userProfile = new UserProfile(Guid.NewGuid(), "dave", UserTag.Create("dave"));
+        var userProfile = new UserProfile(Guid.NewGuid(), "dave", UserTag.Create(UserTags.New()));
         var command = new AcceptFriendshipCommand()
         {
             FriendTag = "friend",

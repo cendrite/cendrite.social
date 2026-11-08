@@ -9,6 +9,7 @@ using Social.Domain.Interfaces;
 using Social.Domain.Services;
 using Social.Domain.ValueObjects;
 using Social.Test.Integration.Setup;
+using Social.Test.Integration.Setup.Helpers;
 
 namespace Social.Test.Integration.UserProfileTest.QueryTest.GetUserProfileByTagTest;
 
@@ -30,8 +31,8 @@ public class GetUserProfileByTagQueryHandlerTest : IntegrationTestBase
     public async Task Handle_Valid_Query_Should_Return_UserProfile()
     {
         // Arrange
-        var requestingUser = new UserProfile(Guid.NewGuid(), "requestingUser", UserTag.Create("requestingUser"));
-        var userProfile = new UserProfile(Guid.NewGuid(), "userProfile", UserTag.Create("userProfile"));
+        var requestingUser = new UserProfile(Guid.NewGuid(), "requestingUser", UserTag.Create(UserTags.New()));
+        var userProfile = new UserProfile(Guid.NewGuid(), "userProfile", UserTag.Create(UserTags.New()));
         await Db.AddRangeAsync(requestingUser, userProfile);
         await Db.SaveChangesAsync();
 
@@ -50,7 +51,7 @@ public class GetUserProfileByTagQueryHandlerTest : IntegrationTestBase
     public async Task Handle_Query_When_User_Does_Not_Exist_Should_Return_NotFound()
     {
         // Arrange
-        var userProfile = new UserProfile(Guid.NewGuid(), "userProfile", UserTag.Create("userProfile"));
+        var userProfile = new UserProfile(Guid.NewGuid(), "userProfile", UserTag.Create(UserTags.New()));
         await Db.AddAsync(userProfile);
         await Db.SaveChangesAsync();
 
@@ -69,7 +70,7 @@ public class GetUserProfileByTagQueryHandlerTest : IntegrationTestBase
     public async Task Handle_Query_When_UserProfile_Does_Not_Exist_Should_Return_EmptyDto()
     {
         // Arrange
-        var requestingUser = new UserProfile(Guid.NewGuid(), "requestingUser", UserTag.Create("requestingUser"));
+        var requestingUser = new UserProfile(Guid.NewGuid(), "requestingUser", UserTag.Create(UserTags.New()));
         await Db.AddAsync(requestingUser);
         await Db.SaveChangesAsync();
 
@@ -86,8 +87,8 @@ public class GetUserProfileByTagQueryHandlerTest : IntegrationTestBase
     [Fact]
     public async Task Handle_Query_When_User_Is_Blocked_Should_Return_EmptyDto()
     {
-        var requestingUser = new UserProfile(Guid.NewGuid(), "requestingUser", UserTag.Create("requestingUser"));
-        var userProfile = new UserProfile(Guid.NewGuid(), "userProfile", UserTag.Create("userProfile"));
+        var requestingUser = new UserProfile(Guid.NewGuid(), "requestingUser", UserTag.Create(UserTags.New()));
+        var userProfile = new UserProfile(Guid.NewGuid(), "userProfile", UserTag.Create(UserTags.New()));
         requestingUser.BlockUser(userProfile.Id);
         await Db.AddRangeAsync(requestingUser, userProfile);
         await Db.SaveChangesAsync();
@@ -105,8 +106,8 @@ public class GetUserProfileByTagQueryHandlerTest : IntegrationTestBase
 
     public async Task Handle_Query_When_User_Is_Private_Should_Return_EmptyDto()
     {
-        var requestingUser = new UserProfile(Guid.NewGuid(), "requestingUser", UserTag.Create("requestingUser"));
-        var userProfile = new UserProfile(Guid.NewGuid(), "userProfile", UserTag.Create("userProfile"));
+        var requestingUser = new UserProfile(Guid.NewGuid(), "requestingUser", UserTag.Create(UserTags.New()));
+        var userProfile = new UserProfile(Guid.NewGuid(), "userProfile", UserTag.Create(UserTags.New()));
         userProfile.TogglePrivacy(true);
         await Db.AddRangeAsync(requestingUser, userProfile);
         await Db.SaveChangesAsync();

@@ -9,6 +9,7 @@ using Social.Domain.Common;
 using Social.Domain.Interfaces;
 using Social.Domain.ValueObjects;
 using Xunit;
+using Social.Test.Unit.Setup.Helpers;
 
 namespace Social.Test.Unit.UserProfileTest.CommandTest.DeleteTest.Friendship;
 
@@ -32,7 +33,7 @@ public class DeleteFriendshipCommandHandlerTest
     public async Task Handle_Given_Valid_Command_Should_Return_Success()
     {
         // Arrange
-        var userProfile = new UserProfile(Guid.NewGuid(), "TestUser", UserTag.Create("testUser"));
+        var userProfile = new UserProfile(Guid.NewGuid(), "TestUser", UserTag.Create(UserTags.New()));
 
         var command = new DeleteFriendshipCommand()
         {
@@ -83,7 +84,7 @@ public class DeleteFriendshipCommandHandlerTest
     public async Task Handle_Given_Command_With_Invalid_FriendTag_Should_Return_Fail()
     {
         // Arrange
-        var userProfile = new UserProfile(Guid.NewGuid(), "TestUser", UserTag.Create("testUser"));
+        var userProfile = new UserProfile(Guid.NewGuid(), "TestUser", UserTag.Create(UserTags.New()));
 
         var command = new DeleteFriendshipCommand()
         {

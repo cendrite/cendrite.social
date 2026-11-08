@@ -15,6 +15,7 @@ using Social.Domain.Aggregates;
 using Social.Domain.Services;
 using Social.Domain.ValueObjects;
 using Social.Test.Integration.Setup;
+using Social.Test.Integration.Setup.Helpers;
 
 namespace Social.Test.Integration.UserProfileTest.ConsumerTest;
 
@@ -36,7 +37,7 @@ public class DeleteUserProfileConsumerTest : IntegrationTestBase
     public async Task Consume_Valid_Message_Should_SoftDelete_UserProfile()
     {
         // Arrange
-        var userProfile = new UserProfile(Guid.NewGuid(), "James", UserTag.Create("james"));
+        var userProfile = new UserProfile(Guid.NewGuid(), "James", UserTag.Create(UserTags.New()));
         await Db.UserProfile.AddAsync(userProfile);
         await Db.SaveChangesAsync();
 
@@ -57,7 +58,7 @@ public class DeleteUserProfileConsumerTest : IntegrationTestBase
     public async Task Consume_Invalid_Message_Should_Throw_KeyNotFoundException()
     {
         // Arrange
-        var userProfile = new UserProfile(Guid.NewGuid(), "James", UserTag.Create("james"));
+        var userProfile = new UserProfile(Guid.NewGuid(), "James", UserTag.Create(UserTags.New()));
         await Db.UserProfile.AddAsync(userProfile);
         await Db.SaveChangesAsync();
         var invalidId = Guid.NewGuid();

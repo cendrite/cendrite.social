@@ -13,6 +13,7 @@ using Social.Domain.Interfaces;
 using Social.Domain.ValueObjects;
 using Social.Test.Integration.Setup;
 using Xunit;
+using Social.Test.Integration.Setup.Helpers;
 
 namespace Social.Test.Integration.UserProfileTest.CommandTest.DeleteTest.FriendRequest;
 
@@ -38,8 +39,8 @@ public class DeleteFriendRequestCommandHandlerTest : IntegrationTestBase
     public async Task DeleteFriendRequestCommandHandler_ShouldDeleteFriendRequest_WhenValidRequest()
     {
         // Arrange
-        var recievingUser = new UserProfile(Guid.NewGuid(), "James", UserTag.Create("James"));
-        var requestinUser = new UserProfile(Guid.NewGuid(), "John", UserTag.Create("John"));
+        var recievingUser = new UserProfile(Guid.NewGuid(), "James", UserTag.Create(UserTags.New()));
+        var requestinUser = new UserProfile(Guid.NewGuid(), "John", UserTag.Create(UserTags.New()));
         requestinUser.AddFriendship(recievingUser);
 
         Db.UserProfile.AddRange(recievingUser, requestinUser);
@@ -82,7 +83,7 @@ public class DeleteFriendRequestCommandHandlerTest : IntegrationTestBase
     public async Task DeleteFriendRequestCommandHandler_ShouldReturnError_WhenFriendTagNotFound()
     {
         // Arrange
-        var userProfile = new UserProfile(Guid.NewGuid(), "James", UserTag.Create("James"));
+        var userProfile = new UserProfile(Guid.NewGuid(), "James", UserTag.Create(UserTags.New()));
         Db.UserProfile.Add(userProfile);
         await Db.SaveChangesAsync();
 
@@ -105,8 +106,8 @@ public class DeleteFriendRequestCommandHandlerTest : IntegrationTestBase
     public async Task DeleteFriendRequestCommandHandler_ShouldReturnError_WhenFriendshipNotPending()
     {
         // Arrange
-        var recievingUser = new UserProfile(Guid.NewGuid(), "James", UserTag.Create("James"));
-        var requestinUser = new UserProfile(Guid.NewGuid(), "John", UserTag.Create("John"));
+        var recievingUser = new UserProfile(Guid.NewGuid(), "James", UserTag.Create(UserTags.New()));
+        var requestinUser = new UserProfile(Guid.NewGuid(), "John", UserTag.Create(UserTags.New()));
 
         requestinUser.AddFriendship(recievingUser);
 

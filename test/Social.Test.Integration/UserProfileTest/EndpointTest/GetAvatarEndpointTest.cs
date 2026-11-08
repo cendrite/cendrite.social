@@ -26,7 +26,7 @@ public class GetAvatarEndpointTest : IntegrationTestBase
     {
         // Arrange
         var userId = Guid.NewGuid();
-        var user = new UserProfile(userId, "TestUser", UserTag.Create("TestUser"));
+        var user = new UserProfile(userId, "TestUser", UserTag.Create(UserTags.New()));
         user.GetOrCreateAvatar("image/png");
         Db.UserProfile.Add(user);
         await Db.SaveChangesAsync();
@@ -67,7 +67,7 @@ public class GetAvatarEndpointTest : IntegrationTestBase
     {
         // Arrange
         var userId = Guid.NewGuid();
-        var user = new UserProfile(userId, "TestUser2", UserTag.Create("TestUser2"));
+        var user = new UserProfile(userId, "TestUser2", UserTag.Create(UserTags.New()));
         user.GetOrCreateAvatar("image/png");
         Db.UserProfile.Add(user);
         await Db.SaveChangesAsync();
@@ -91,7 +91,7 @@ public class GetAvatarEndpointTest : IntegrationTestBase
     {
         // Arrange
         var userId = Guid.NewGuid();
-        var user = new UserProfile(userId, "TestUser3", UserTag.Create("TestUser3"));
+        var user = new UserProfile(userId, "TestUser3", UserTag.Create(UserTags.New()));
         user.GetOrCreateAvatar("image/png");
         Db.UserProfile.Add(user);
         await Db.SaveChangesAsync();
