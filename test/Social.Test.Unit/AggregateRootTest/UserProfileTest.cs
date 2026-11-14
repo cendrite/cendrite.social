@@ -1,6 +1,7 @@
 ﻿using FluentAssertions;
 using Social.Domain.Aggregates;
 using Social.Domain.ValueObjects;
+using Social.Domain.Events.UserProfile;
 using Xunit;
 using Social.Test.Unit.Setup.Helpers;
 
@@ -139,5 +140,49 @@ public class UserProfileTest
         // Assert
         result.Success.Should().BeFalse();
         result.Error!.Description.Should().Contain("Friendship already exists");
+    }
+
+    [Fact]
+    public void GetOrCreateAvatar_Should_Raise_AvatarUpdated_For_The_First_Picture()
+    {
+        // Arrange
+        var userProfile = new UserProfile(Guid.NewGuid(), "TestUser", UserTag.Create(UserTags.New()));
+
+        // Act
+        userProfile.GetOrCreateAvatar("image/png");
+
+        // Assert
+        userProfile.DomainEvents.Should().ContainSingle().Which.Should().BeOfType<AvatarUpdatedEvent>();
+    }
+
+    [Fact]
+    public void RemoveAvatar_Should_Remove_The_Avatar_And_Raise_AvatarUpdated()
+    {
+        // Arrange
+        var userProfile = new UserProfile(Guid.NewGuid(), "TestUser", UserTag.Create(UserTags.New()));
+        var avatar = userProfile.GetOrCreateAvatar("image/png");
+        userProfile.ClearDomainEvents();
+
+        // Act
+        var removed = userProfile.RemoveAvatar();
+
+        // Assert
+        removed.Should().BeSameAs(avatar);
+        userProfile.Avatar.Should().BeNull();
+        userProfile.DomainEvents.Should().ContainSingle().Which.Should().BeOfType<AvatarUpdatedEvent>();
+    }
+
+    [Fact]
+    public void RemoveAvatar_Without_Avatar_Should_Do_Nothing()
+    {
+        // Arrange
+        var userProfile = new UserProfile(Guid.NewGuid(), "TestUser", UserTag.Create(UserTags.New()));
+
+        // Act
+        var removed = userProfile.RemoveAvatar();
+
+        // Assert
+        removed.Should().BeNull();
+        userProfile.DomainEvents.Should().BeEmpty();
     }
 }
