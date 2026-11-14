@@ -39,6 +39,7 @@ public partial class UserProfile : AggregateRoot
         if (_avatar is null)
         {
             _avatar = new Avatar(Id, Guid.NewGuid(), contentType, ETag.Generate());
+            AddDomainEvent(new AvatarUpdatedEvent(Id));
             return _avatar;
         }
 
@@ -46,6 +47,16 @@ public partial class UserProfile : AggregateRoot
         _avatar.BumpTag();
         AddDomainEvent(new AvatarUpdatedEvent(Id));
         return _avatar;
+    }
+
+    public Avatar? RemoveAvatar()
+    {
+        if (_avatar is null) return null;
+
+        var removed = _avatar;
+        _avatar = null;
+        AddDomainEvent(new AvatarUpdatedEvent(Id));
+        return removed;
     }
 
     public Result SetDisplayName(string displayName)

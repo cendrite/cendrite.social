@@ -19,6 +19,7 @@ using Social.Application.Features.Friendships.Queries.GetFriendRequests;
 using Social.Application.Features.Friendships.Queries.GetFriends;
 using Social.Application.Features.UserProfile.Queries.GetAvatar;
 using Social.Application.Features.UserProfile.Commands.Update.Avatar;
+using Social.Application.Features.UserProfile.Commands.Delete.Avatar;
 
 namespace Social.API.Controllers;
 
@@ -82,6 +83,15 @@ public class UserProfileController(ISender sender) : ControllerBase
         var result = await sender.Send(new UpdateAvatarCommand() 
         { TenantId = tenantId, Avatar = Avatar }, ct);
         return result.Success ? Ok(result.Value) : result.ToProblemDetails();
+    }
+
+    [HttpDelete("avatar")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> DeleteAvatar(CancellationToken ct = default)
+    {
+        var result = await sender.Send(new DeleteAvatarCommand(User.GetUserId()), ct);
+        return result.Success ? Ok() : result.ToProblemDetails();
     }
 
     [HttpPut("displayname")]

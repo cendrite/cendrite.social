@@ -40,7 +40,7 @@ public class AvatarUpdatedEventHandler(
                 CorrelationId = Guid.NewGuid(),
                 UserTag = userProfile.UserTag.Tag,
                 ConnectionIds = connectionIds,
-                AvatarKey = userProfile.Avatar!.FileKey
+                AvatarKey = userProfile.Avatar?.FileKey
             };
 
             logger.LogInformation("Publishing ProfilePictureUpdatedMessage for UserProfileId: {UserProfileId} with ConnectionIds: {@ConnectionIds}", notification.UserProfileId, connectionIds);
