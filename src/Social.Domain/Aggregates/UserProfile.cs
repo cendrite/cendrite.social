@@ -1,5 +1,6 @@
 using Social.Domain.Abstractions;
 using Social.Domain.Common;
+using Social.Domain.Constants;
 using Social.Domain.Entities;
 using Social.Domain.Enums;
 using Social.Domain.Events.UserProfile;
@@ -70,6 +71,8 @@ public partial class UserProfile : AggregateRoot
         }
         if (!DisplayNameRegex().IsMatch(displayName))
             return Result.Fail(Error.Validation($"Value '{nameof(displayName)}' is not valid in this context"));
+        if (IsReserved(displayName))
+            return Result.Fail(Error.Validation($"Value '{nameof(displayName)}' contains a reserved name"));
 
         DisplayName = displayName;
         AddDomainEvent(new UserProfileDisplayNameUpdatedEvent(Id));
@@ -161,6 +164,18 @@ public partial class UserProfile : AggregateRoot
         _blockedUsers.Remove(blockedUser);
     }
 
+
+    private static bool IsReserved(string name)
+    {
+        var lower = name.ToLowerInvariant();
+
+        return ReservedNameConstants.Words.Any(word =>
+            Enumerable.Range(0, Math.Max(0, lower.Length - word.Length + 1)).Any(start =>
+                word.Select((letter, i) => Reads(lower[start + i], letter)).All(match => match)));
+    }
+
+    private static bool Reads(char c, char letter) =>
+        c == letter || (ReservedNameConstants.LookAlikes.TryGetValue(c, out var lookAlikes) && lookAlikes.Contains(letter));
 
     [System.Text.RegularExpressions.GeneratedRegex(@"^[a-zA-Z0-9]*$")]
     private static partial System.Text.RegularExpressions.Regex DisplayNameRegex();

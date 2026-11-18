@@ -185,4 +185,44 @@ public class UserProfileTest
         removed.Should().BeNull();
         userProfile.DomainEvents.Should().BeEmpty();
     }
+
+    [Theory]
+    [InlineData("Cendrite")]
+    [InlineData("admin")]
+    [InlineData("TheAdmin")]
+    [InlineData("CENDRITEsupport")]
+    [InlineData("c3ndr1te")]
+    [InlineData("4dm1n")]
+    [InlineData("adm1n")]
+    public void SetDisplayName_ShouldFail_WhenDisplayNameContainsReservedName(string displayName)
+    {
+        // Arrange
+        var userProfile = new UserProfile(Guid.NewGuid(), "TestUser", UserTag.Create(UserTags.New()));
+
+        // Act
+        var result = userProfile.SetDisplayName(displayName);
+
+        // Assert
+        result.Success.Should().BeFalse();
+        result.Error!.Description.Should().Contain("reserved name");
+        userProfile.DisplayName.Should().Be("TestUser");
+        userProfile.DomainEvents.Should().BeEmpty();
+    }
+
+    [Theory]
+    [InlineData("Kristian")]
+    [InlineData("Adam")]
+    [InlineData("Cendra")]
+    [InlineData("abc")]
+    public void SetDisplayName_ShouldSucceed_WhenDisplayNameOnlyLooksSimilar(string displayName)
+    {
+        // Arrange
+        var userProfile = new UserProfile(Guid.NewGuid(), "TestUser", UserTag.Create(UserTags.New()));
+
+        // Act
+        var result = userProfile.SetDisplayName(displayName);
+
+        // Assert
+        result.Success.Should().BeTrue();
+    }
 }

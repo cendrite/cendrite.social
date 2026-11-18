@@ -50,6 +50,29 @@ public class UpdateUserProfileDisplayNameCommandHandlerTest : IntegrationTestBas
     }
 
     [Fact]
+    public async Task Handle_Given_Reserved_Name_Should_Fail_And_Keep_The_Old_Name()
+    {
+        // Arrange
+        var userprofile = new UserProfile(Guid.NewGuid(), "david", UserTag.Create(UserTags.New()));
+        Db.UserProfile.Add(userprofile);
+        await Db.SaveChangesAsync();
+
+        var command = new UpdateUserProfileDisplayNameCommand()
+        {
+            DisplayName = "CendriteAdmin",
+            TenantId = userprofile.Id
+        };
+
+        // Act
+        var result = await _sut.Handle(command, CancellationToken.None);
+
+        // Assert
+        result.Success.Should().BeFalse();
+        Db.UserProfile.AsNoTracking().FirstOrDefault(u => u.Id == userprofile.Id)!.DisplayName.Should().Be("david");
+        Db.OutboxMessage.Should().BeEmpty();
+    }
+
+    [Fact]
     public async Task Handle_Given_Invalid_Command_Should_Return_Failure()
     {
         // Arrange
