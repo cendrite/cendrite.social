@@ -19,9 +19,21 @@ public class CreateUserProfileConsumer(
         var message = context.Message;
         try
         {
-            var profile = userProfileLifecycleService.CreateUserProfile(message.UserId, message.Username, message.UserTag);
+            var created = userProfileLifecycleService.CreateUserProfile(message.UserId, message.Username, message.UserTag);
 
-            await userProfileRepository.CreateAsync(profile, context.CancellationToken);
+            if (!created.Success)
+            {
+                await context.RespondAsync(new CreateUserProfileResponse
+                {
+                    CorrelationId = Guid.NewGuid(),
+                    CausationId = message.CausationId,
+                    IsSuccess = false,
+                    Error = created.Error!.Description,
+                });
+                return;
+            }
+
+            await userProfileRepository.CreateAsync(created.RequiredValue, context.CancellationToken);
 
             await unitOfWork.SaveChangesAsync();
 

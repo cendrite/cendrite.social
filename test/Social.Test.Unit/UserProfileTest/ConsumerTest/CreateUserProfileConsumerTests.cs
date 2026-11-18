@@ -7,6 +7,7 @@ using FakeItEasy;
 using MassTransit;
 using Microsoft.Extensions.Logging;
 using Social.Domain.Aggregates;
+using Social.Domain.Common;
 using Social.Domain.Services;
 using Social.Domain.ValueObjects;
 using Xunit;
@@ -57,6 +58,30 @@ namespace Social.Test.Unit.UserProfileTest.ConsumerTest
             A.CallTo(() => _fakeUserProfileLifecycleService.CreateUserProfile(message.UserId, message.Username, message.UserTag)).MustHaveHappenedOnceExactly();
             A.CallTo(() => _fakeUserProfileRepo.CreateAsync(profile, A<CancellationToken>._)).MustHaveHappenedOnceExactly();
             A.CallTo(() => _fakeUnitOfWork.SaveChangesAsync(CancellationToken.None)).MustHaveHappenedOnceExactly();
+        }
+
+        [Fact]
+        public async Task Consume_WhenUsernameIsNotAllowed_ShouldRespondWithErrorAndCreateNothing()
+        {
+            // Arrange
+            var message = _fixture.Build<CreateUserProfileMessage>()
+                .With(x => x.Username, "admin")
+                .Create();
+
+            var fakeConsumeContext = A.Fake<ConsumeContext<CreateUserProfileMessage>>();
+            A.CallTo(() => fakeConsumeContext.Message).Returns(message);
+
+            A.CallTo(() => _fakeUserProfileLifecycleService.CreateUserProfile(message.UserId, message.Username, message.UserTag))
+                .Returns(Result.Fail<UserProfile>(Error.Validation("Value 'name' contains a reserved name")));
+
+            // Act
+            await _sut.Consume(fakeConsumeContext);
+
+            // Assert
+            A.CallTo(() => fakeConsumeContext.RespondAsync(A<CreateUserProfileResponse>.That.Matches(r =>
+                r.IsSuccess == false && r.Error == "Value 'name' contains a reserved name"))).MustHaveHappenedOnceExactly();
+            A.CallTo(() => _fakeUserProfileRepo.CreateAsync(A<UserProfile>._, A<CancellationToken>._)).MustNotHaveHappened();
+            A.CallTo(() => _fakeUnitOfWork.SaveChangesAsync(A<CancellationToken>._)).MustNotHaveHappened();
         }
 
         [Fact]

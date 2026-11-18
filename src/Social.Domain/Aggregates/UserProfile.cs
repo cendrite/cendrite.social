@@ -60,19 +60,24 @@ public partial class UserProfile : AggregateRoot
         return removed;
     }
 
+    public static Result ValidateName(string name)
+    {
+        if (name.Length < ProfileNameConstants.MinLength)
+            return Result.Fail(Error.Validation($"Value '{nameof(name)}' should be at least {ProfileNameConstants.MinLength}."));
+        if (name.Length > ProfileNameConstants.MaxLength)
+            return Result.Fail(Error.Validation($"Value '{nameof(name)}' should not exceed {ProfileNameConstants.MaxLength}."));
+        if (!NameRegex().IsMatch(name))
+            return Result.Fail(Error.Validation($"Value '{nameof(name)}' may only contain letters and digits"));
+        if (IsReserved(name))
+            return Result.Fail(Error.Validation($"Value '{nameof(name)}' contains a reserved name"));
+
+        return Result.Ok();
+    }
+
     public Result SetDisplayName(string displayName)
     {
-        switch (displayName.Length)
-        {
-            case < 3:
-                return Result.Fail(Error.Validation($"Value '{nameof(displayName)}' should be at least 3."));
-            case > 20:
-                return Result.Fail(Error.Validation($"Value '{nameof(displayName)}' should not exceed 20."));
-        }
-        if (!DisplayNameRegex().IsMatch(displayName))
-            return Result.Fail(Error.Validation($"Value '{nameof(displayName)}' is not valid in this context"));
-        if (IsReserved(displayName))
-            return Result.Fail(Error.Validation($"Value '{nameof(displayName)}' contains a reserved name"));
+        var valid = ValidateName(displayName);
+        if (!valid.Success) return valid;
 
         DisplayName = displayName;
         AddDomainEvent(new UserProfileDisplayNameUpdatedEvent(Id));
@@ -178,5 +183,5 @@ public partial class UserProfile : AggregateRoot
         c == letter || (ReservedNameConstants.LookAlikes.TryGetValue(c, out var lookAlikes) && lookAlikes.Contains(letter));
 
     [System.Text.RegularExpressions.GeneratedRegex(@"^[a-zA-Z0-9]*$")]
-    private static partial System.Text.RegularExpressions.Regex DisplayNameRegex();
+    private static partial System.Text.RegularExpressions.Regex NameRegex();
 }

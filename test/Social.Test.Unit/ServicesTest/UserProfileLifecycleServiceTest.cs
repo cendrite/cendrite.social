@@ -17,7 +17,7 @@ namespace Social.Test.Unit.ServicesTest
             var username = "TestUser";
 
             // Act
-            var userProfile = _sut.CreateUserProfile(userId, username, UserTags.New());
+            var userProfile = _sut.CreateUserProfile(userId, username, UserTags.New()).RequiredValue;
 
             // Assert
             userProfile.Should().NotBeNull();
@@ -33,10 +33,36 @@ namespace Social.Test.Unit.ServicesTest
             var userTag = UserTags.New();
 
             // Act
-            var userProfile = _sut.CreateUserProfile(userId, "AnotherUser", userTag);
+            var userProfile = _sut.CreateUserProfile(userId, "AnotherUser", userTag).RequiredValue;
 
             // Assert
             userProfile.UserTag.Tag.Should().Be(userTag);
+        }
+
+        [Theory]
+        [InlineData("admin")]
+        [InlineData("Cendrite")]
+        [InlineData("c3ndr1te")]
+        [InlineData("a")]
+        [InlineData("has space")]
+        [InlineData("аdmin")]
+        public void CreateUserProfile_ShouldFail_WhenUsernameIsNotAllowed(string username)
+        {
+            // Act
+            var result = _sut.CreateUserProfile(Guid.NewGuid(), username, UserTags.New());
+
+            // Assert
+            result.Success.Should().BeFalse();
+        }
+
+        [Fact]
+        public void CreateUserProfile_ShouldAcceptATwoLetterUsername()
+        {
+            // Act
+            var result = _sut.CreateUserProfile(Guid.NewGuid(), "Bo", UserTags.New());
+
+            // Assert
+            result.Success.Should().BeTrue();
         }
     }
 }

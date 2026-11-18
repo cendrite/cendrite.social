@@ -30,14 +30,14 @@ public class UserProfileTest
     {
         // Arrange
         var userProfile = new UserProfile(Guid.NewGuid(), "TestUser", UserTag.Create(UserTags.New()));
-        var shortDisplayName = "ab"; // Less than 3 characters
+        var shortDisplayName = "a";
 
         // Act
         var result = userProfile.SetDisplayName(shortDisplayName);
 
         // Assert
         result.Success.Should().BeFalse();
-        result.Error!.Description.Should().Contain("should be at least 3.");
+        result.Error!.Description.Should().Contain("should be at least 2.");
         userProfile.DisplayName.Should().Be("TestUser");
         userProfile.DomainEvents.Should().HaveCount(0);
     }
@@ -72,7 +72,7 @@ public class UserProfileTest
 
         // Assert
         result.Success.Should().BeFalse();
-        result.Error!.Description.Should().Contain("not valid");
+        result.Error!.Description.Should().Contain("may only contain letters and digits");
         userProfile.DisplayName.Should().Be("TestUser");
         userProfile.DomainEvents.Should().HaveCount(0);
 
@@ -214,6 +214,7 @@ public class UserProfileTest
     [InlineData("Adam")]
     [InlineData("Cendra")]
     [InlineData("abc")]
+    [InlineData("Bo")]
     public void SetDisplayName_ShouldSucceed_WhenDisplayNameOnlyLooksSimilar(string displayName)
     {
         // Arrange
