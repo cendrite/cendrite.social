@@ -32,4 +32,16 @@ public class Friendship : Entity
     {
         IsSeen = true;
     }
+
+    public override bool Equals(object obj)
+    {
+        return obj is Friendship other
+               && UserProfileId == other.UserProfileId
+               && FriendProfileId == other.FriendProfileId;
+    }
+
+    public override int GetHashCode()
+    {
+        return HashCode.Combine(UserProfileId, FriendProfileId);
+    }
 }

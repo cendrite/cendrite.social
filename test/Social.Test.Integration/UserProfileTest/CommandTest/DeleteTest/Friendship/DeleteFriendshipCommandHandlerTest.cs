@@ -59,6 +59,76 @@ public class DeleteFriendshipCommandHandlerTest : IntegrationTestBase
         Db.OutboxMessage.Should().HaveCount(1);
     }
 
+    [Theory]
+    [InlineData(0)]
+    [InlineData(1)]
+    public async Task Handle_Given_Several_Initiated_Friendships_Should_Delete_Only_The_Named_One(int target)
+    {
+        // Arrange
+        var userProfile = new UserProfile(Guid.NewGuid(), "TestUser", UserTag.Create(UserTags.New()));
+        var friends = new[]
+        {
+            new UserProfile(Guid.NewGuid(), "FriendOne", UserTag.Create(UserTags.New())),
+            new UserProfile(Guid.NewGuid(), "FriendTwo", UserTag.Create(UserTags.New())),
+        };
+
+        foreach (var friend in friends) userProfile.AddFriendship(friend);
+        Db.UserProfile.Add(userProfile);
+        Db.UserProfile.AddRange(friends);
+        await Db.SaveChangesAsync();
+        Db.ChangeTracker.Clear();
+
+        var cmd = new DeleteFriendshipCommand()
+        {
+            TenantId = userProfile.Id,
+            FriendTag = friends[target].UserTag.Tag
+        };
+
+        // Act
+        var result = await _sut.Handle(cmd, CancellationToken.None);
+
+        // Assert
+        result.Success.Should().BeTrue();
+        Db.ChangeTracker.Clear();
+        Db.Friendship.Should().ContainSingle()
+            .Which.FriendProfileId.Should().Be(friends[1 - target].Id);
+    }
+
+    [Theory]
+    [InlineData(0)]
+    [InlineData(1)]
+    public async Task Handle_Given_Several_Received_Friendships_Should_Delete_Only_The_Named_One(int target)
+    {
+        // Arrange
+        var userProfile = new UserProfile(Guid.NewGuid(), "TestUser", UserTag.Create(UserTags.New()));
+        var friends = new[]
+        {
+            new UserProfile(Guid.NewGuid(), "FriendOne", UserTag.Create(UserTags.New())),
+            new UserProfile(Guid.NewGuid(), "FriendTwo", UserTag.Create(UserTags.New())),
+        };
+
+        foreach (var friend in friends) friend.AddFriendship(userProfile);
+        Db.UserProfile.Add(userProfile);
+        Db.UserProfile.AddRange(friends);
+        await Db.SaveChangesAsync();
+        Db.ChangeTracker.Clear();
+
+        var cmd = new DeleteFriendshipCommand()
+        {
+            TenantId = userProfile.Id,
+            FriendTag = friends[target].UserTag.Tag
+        };
+
+        // Act
+        var result = await _sut.Handle(cmd, CancellationToken.None);
+
+        // Assert
+        result.Success.Should().BeTrue();
+        Db.ChangeTracker.Clear();
+        Db.Friendship.Should().ContainSingle()
+            .Which.UserProfileId.Should().Be(friends[1 - target].Id);
+    }
+
     [Fact]
     public async Task Handle_Given_Command_With_Invalid_UserProfileId_Should_Return_NotFound()
     {
